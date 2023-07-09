@@ -9,7 +9,6 @@
         $customer_address = $_POST['customer_address'];
         $email = $_POST['email'];
         $customer_password = $_POST['customer_password'];
-        // echo $firstname.' '. $lastname.' '. $customer_address.' '. $email.' '.$customer_password;
         $new_customer = new Customer($firstname, $lastname, $customer_address, $email, $customer_password);
         $customer_id = $new_customer->getCustomerId();
 
