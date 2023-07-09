@@ -11,8 +11,8 @@
 <body>
     <div>
         <form action="login.php" method="POST">
-            <input type="text" name="username">
-            <input type="password" name="password">
+            <input type="email" name="email" placeholder="Email" required>
+            <input type="password" name="password" placeholder="Password" required>
             <input type="submit" value="Log-in">
         </form>
     </div>
