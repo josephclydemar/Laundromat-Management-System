@@ -41,9 +41,15 @@
         // $last_user = $stmt->fetch(PDO::FETCH_ASSOC);
         // var_dump($all_users);
 
-        $sql_select = "SELECT * FROM users ORDER BY user_id DESC";
-        $stmt = $pdo->query($sql_select);
-        // $all_users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        // $sql_select = "SELECT * FROM users ORDER BY user_id DESC";
+        // $stmt = $pdo->query($sql_select);
+        // // $all_users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        // $last_user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        $sql_select = "SELECT * FROM users WHERE user_id=:user_id";
+        $stmt = $pdo->prepare($sql_select);
+        $user_data1 = array(':user_id'=>14);
+        $stmt->execute($user_data1);
         $last_user = $stmt->fetch(PDO::FETCH_ASSOC);
     }
 ?>
@@ -69,11 +75,17 @@
         //         // echo '<h4>';
         //     }
         // }
-        if(isset($last_user)) {
-            foreach($last_user as $k => $v) {
-                echo $k.' : '.$v.'<br>';
-            }
+        // if(isset($last_user)) {
+        //     foreach($last_user as $k => $v) {
+        //         echo $k.' : '.$v.'<br>';
+        //     }
+        // }
+        if($last_user) {
+            echo 'gASGDSG';
+        }else {
+            var_dump($last_user);
         }
+        
     ?>
     <form method="POST">
         <input type="text" name="surname" placeholder="Familiy Name">
