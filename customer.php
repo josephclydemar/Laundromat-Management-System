@@ -1,5 +1,7 @@
 <?php
 include_once "order.php";
+include_once "database_connection.php";
+
     class Customer
     {
         private $customer_id;
@@ -10,13 +12,7 @@ include_once "order.php";
         private $customer_password;
         private $total_orders = 0;
 
-        private $db_username = 'root';
-        private $db_password = '';
-        private $db_name = 'laundry_system';
-        private $host = 'localhost';
-        private $port = '3306';
-
-        private $dsn;
+        private $db_connection;
         private $pdo;
 
         public function __construct($firstname, $lastname, $customer_address, $email, $customer_password)
@@ -27,13 +23,14 @@ include_once "order.php";
             $this->email = $email;
             $this->customer_password = $customer_password;
 
-            $this->dsn = 'mysql:host='.$this->host.';port='.$this->port.';dbname='.$this->db_name;
-            $this->pdo = new PDO($this->dsn, $this->db_username, $this->db_password);
+            $this->db_connection = new DatabaseConnection();
+            $this->pdo = $this->db_connection->getPDO();
+            
             $this->createCustomer($firstname, $lastname, $customer_address, $email, $customer_password);
             $sql_select = "SELECT * FROM customers ORDER BY customer_id DESC";
             $stmt = $this->pdo->query($sql_select);
-            $lastCustomer = $stmt->fetch(PDO::FETCH_ASSOC);
-            $this->customer_id = $lastCustomer['customer_id'];
+            $last_customer = $stmt->fetch(PDO::FETCH_ASSOC);
+            $this->customer_id = $last_customer['customer_id'];
         }
 
         public function createCustomer()
