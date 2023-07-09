@@ -29,22 +29,22 @@
 
     if(isset($_POST['lat'])) {
         if($_POST['surname'] != '' && $_POST['firstname'] != '' && $_POST['age'] != '') {
-            $sqlInsert = "INSERT INTO users (surname, firstname, age) VALUES (:surname, :firstname, :age)";
-            $stmt = $pdo->prepare($sqlInsert);
-            $userData = array(':surname'=>$_POST['surname'], ':firstname'=>$_POST['firstname'], ':age'=>$_POST['age']);
-            $stmt->execute($userData);
+            $sql_insert = "INSERT INTO users (surname, firstname, age) VALUES (:surname, :firstname, :age)";
+            $stmt = $pdo->prepare($sql_insert);
+            $user_data = array(':surname'=>$_POST['surname'], ':firstname'=>$_POST['firstname'], ':age'=>$_POST['age']);
+            $stmt->execute($user_data);
         }
 
-        // $sqlSelect = "SELECT * FROM users";
-        // $stmt = $pdo->query($sqlSelect);
-        // // $allUsers = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        // $lastUser = $stmt->fetch(PDO::FETCH_ASSOC);
-        // var_dump($allUsers);
+        // $sql_select = "SELECT * FROM users";
+        // $stmt = $pdo->query($sql_select);
+        // // $all_users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        // $last_user = $stmt->fetch(PDO::FETCH_ASSOC);
+        // var_dump($all_users);
 
-        $sqlSelect = "SELECT * FROM users ORDER BY user_id DESC";
-        $stmt = $pdo->query($sqlSelect);
-        // $allUsers = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $lastUser = $stmt->fetch(PDO::FETCH_ASSOC);
+        $sql_select = "SELECT * FROM users ORDER BY user_id DESC";
+        $stmt = $pdo->query($sql_select);
+        // $all_users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $last_user = $stmt->fetch(PDO::FETCH_ASSOC);
     }
 ?>
 
@@ -58,8 +58,8 @@
 <body>
     <h1>TEST</h1>
     <?php
-        // if(isset($allUsers)) {
-        //     foreach($allUsers as $key => $value) {
+        // if(isset($all_users)) {
+        //     foreach($all_users as $key => $value) {
         //         // print_r($value);
         //         // echo '<h4>';
         //         foreach($value as $k => $v) {
@@ -69,8 +69,8 @@
         //         // echo '<h4>';
         //     }
         // }
-        if(isset($lastUser)) {
-            foreach($lastUser as $k => $v) {
+        if(isset($last_user)) {
+            foreach($last_user as $k => $v) {
                 echo $k.' : '.$v.'<br>';
             }
         }
