@@ -3,13 +3,13 @@
     include_once "database_connection.php";
     include_once "customer.php";
 
-    function verifyEmailIsUnique($email)
+    function verifyEmailIsUnique($entered_email)
     {
         $db_connection = new DatabaseConnection();
         $pdo = $db_connection->getPDO();
         $sql_select = "SELECT * FROM customers WHERE emaiL=:email";
 	    $stmt = $pdo->prepare($sql_select);
-        $stmt->execute(array(':email'=>$email));
+        $stmt->execute(array(':email'=>$entered_email));
 	    $select_query_result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $select_query_result;
     }
