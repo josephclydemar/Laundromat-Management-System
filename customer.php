@@ -43,7 +43,7 @@ include_once "order.php";
             $stmt = $this->pdo->prepare($insert_new_customer);
             $stmt->execute(array(':firstname'=>$this->firstname,
                                  ':lastname'=>$this->lastname,
-                                 ':customer_address,'=>$this->customer_address,
+                                 ':customer_address'=>$this->customer_address,
                                  ':total_orders'=>$this->total_orders,
                                  ':email'=>$this->email,
                                  ':customer_password'=>$this->customer_password
