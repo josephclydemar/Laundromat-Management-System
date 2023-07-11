@@ -1,4 +1,5 @@
 <?php
+include_once "database_connection.php";
     class Order
     {
         private $order_id;
@@ -7,13 +8,7 @@
         private $laundry_weight;
         private $price;
 
-        private $db_username = 'root';
-        private $db_password = '';
-        private $db_name = 'laundry_system';
-        private $host = 'localhost';
-        private $port = '3306';
-
-        private $dsn;
+        private $db_connection;
         private $pdo;
 
         public function __construct($customer_id, $service_type, $laundry_weight, $price)
@@ -22,8 +17,9 @@
             $this->service_type = $service_type;
             $this->laundry_weight = $laundry_weight;
             $this->price = $price;
-            $this->dsn = 'mysql:host='.$this->host.';port='.$this->port.';dbname='.$this->db_name;
-            $this->pdo = new PDO($this->dsn, $this->db_username, $this->db_password);
+            
+            $this->db_connection = new DatabaseConnection();
+            $this->pdo = $this->db_connection->getPDO();
 
             $this->createOrder();
             $sql_select = "SELECT * FROM orders ORDER BY order_id DESC";
