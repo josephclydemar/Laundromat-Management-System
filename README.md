@@ -22,7 +22,10 @@
 
 ---
 ### MySQL Database and Table Creation Commands:
-**Creating The `customers` table:**
+
+**Create the database in _phpMyAdmin_ and name it `laundry_system`.**
+
+**Create the `customers` table:**
 ```sql
 CREATE TABLE customers (customer_id INT NOT NULL AUTO_INCREMENT, firstname VARCHAR(50) NOT NULL, lastname VARCHAR(25) NOT NULL, customer_address VARCHAR(200), total_orders INT NOT NULL, email VARCHAR(100) NOT NULL, customer_password VARCHAR(100) NOT NULL, PRIMARY KEY (customer_id));
 ```
