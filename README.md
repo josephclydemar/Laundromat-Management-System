@@ -32,7 +32,7 @@ CREATE TABLE users (user_id INT NOT NULL AUTO_INCREMENT, firstname VARCHAR(50) N
 
 **Create the `services` table:**
 ```sql
-CREATE TABLE services (service_id INT NOT NULL AUTO_INCREMENT, service_name VARCHAR(50), description TEXT, PRIMARY KEY (order_id));
+CREATE TABLE services (service_id INT NOT NULL AUTO_INCREMENT, service_name VARCHAR(50), description TEXT, PRIMARY KEY (service_id));
 ```
 
 **Create the `orders` table:**
