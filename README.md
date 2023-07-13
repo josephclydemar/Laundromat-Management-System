@@ -40,6 +40,11 @@ CREATE TABLE services (service_id INT NOT NULL AUTO_INCREMENT, service_name VARC
 CREATE TABLE orders (order_id INT NOT NULL AUTO_INCREMENT, user_id INT NOT NULL, service_id INT NOT NULL, remaining_time INT NOT NULL, status INT NOT NULL, weight DOUBLE NOT NULL, description TEXT, PRIMARY KEY (order_id));
 ```
 
+**Create the `payments` table:**
+```sql
+CREATE TABLE payments (payment_id INT NOT NULL AUTO_INCREMENT, order_id INT NOT NULL, payment_date DATETIME NOT NULL, payment_amount DOUBLE NOT NULL, PRIMARY KEY (payment_id));
+```
+
 <br>
 
 ---
