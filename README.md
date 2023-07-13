@@ -25,9 +25,14 @@
 
 **Create the database in _phpMyAdmin_ and name it `laundry_system`.**
 
-**Create the `customers` table:**
+**Create the `users` table:**
 ```sql
-CREATE TABLE customers (customer_id INT NOT NULL AUTO_INCREMENT, firstname VARCHAR(50) NOT NULL, lastname VARCHAR(25) NOT NULL, customer_address VARCHAR(200), total_orders INT NOT NULL, email VARCHAR(100) NOT NULL, customer_password VARCHAR(100) NOT NULL, PRIMARY KEY (customer_id));
+CREATE TABLE users (user_id INT NOT NULL AUTO_INCREMENT, firstname VARCHAR(50) NOT NULL, lastname VARCHAR(25) NOT NULL, user_address VARCHAR(200), total_orders INT NOT NULL, email VARCHAR(100) NOT NULL, user_password VARCHAR(100) NOT NULL, user_type INT NOT NULL, PRIMARY KEY (user_id));
+```
+
+**Create the `orders` table:**
+```sql
+CREATE TABLE orders (order_id INT NOT NULL AUTO_INCREMENT, user_id INT NOT NULL, service_id INT NOT NULL, remaining_time INT NOT NULL, status INT NOT NULL, weight DOUBLE NOT NULL, PRIMARY KEY (order_id), FOREIGN KEY(user_id), FOREIGN KEY(service_id));
 ```
 
 <br>
