@@ -46,7 +46,7 @@ CREATE TABLE orders (order_id INT NOT NULL AUTO_INCREMENT, user_id INT NOT NULL,
 
 
 ### PHP to MySQL Connection code:  
-**Selecting All Rows From a table:**
+**Selecting all Rows from a Table:**
 ```php
 $sql_select = "SELECT * FROM users";   or   $sql_select = "SELECT * FROM users ORDER BY user_id DESC";
 $stmt = $pdo->query($sql_select);
@@ -55,7 +55,7 @@ $all_rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 <br>
 
-**Selecting First or Last Row From a table:**
+**Selecting first or last Row from a Table:**
 ```php
 $sql_select = "SELECT * FROM users";   or   $sql_select = "SELECT * FROM users ORDER BY user_id DESC";
 $stmt = $pdo->query($sql_select);
@@ -64,7 +64,7 @@ $one_row = $stmt->fetch(PDO::FETCH_ASSOC);
 
 <br>
 
-**Selecting A Specific Row From a table:**
+**Selecting a specific Row from a Table:**
 ```php
 $sql_select = "SELECT * FROM users WHERE surname=:surname";
 $stmt = $pdo->prepare($sql_select);
@@ -76,7 +76,7 @@ $specific_user = $stmt->fetch(PDO::FETCH_ASSOC);
 <br>
 <br>
 
-**Inserting Into a table:**
+**Inserting into a Table:**
 ```php
 $sql_insert = "INSERT INTO users (surname, firstname, age) VALUES (:surname, :firstname, :age)";
 $stmt = $pdo->prepare($sql_insert);
