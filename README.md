@@ -61,7 +61,7 @@ CREATE TABLE messages (message_id INT NOT NULL AUTO_INCREMENT, user_id INT NOT N
 <br>
 <br>
 
-**Insert an admin to `users` table:**
+**Insert an admin into `users` table:**
 ```sql
 INSERT INTO users (firstname, lastname, user_address, total_orders, email, user_password, user_type) VALUES ('Miguelito', 'Legazpi', 'Consolacion, Cebu', 0, 'miguelito24@gmail.com', 'gwapokohaha', 1);
 ```
