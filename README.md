@@ -69,6 +69,13 @@ INSERT INTO users (firstname, lastname, user_address, total_orders, email, user_
 
 <br>
 
+**Insert an admin into `users` table:**
+```sql
+INSERT INTO services (service_name, service_description) VALUES ("Wash, Dry", "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable.");
+```
+
+<br>
+
 ---
 
 
