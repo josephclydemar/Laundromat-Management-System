@@ -47,6 +47,13 @@ CREATE TABLE payments (payment_id INT NOT NULL AUTO_INCREMENT, order_id INT NOT 
 
 <br>
 
+**Insert an admin to `users` table:**
+```sql
+INSERT INTO users (firstname, lastname, user_address, total_orders, email, user_password, user_type) VALUES ('Miguelito', 'Legazpi', 'Consolacion, Cebu', 0, 'miguelito24@gmail.com', 'gwapokohaha', 1);
+```
+
+<br>
+
 ---
 
 
