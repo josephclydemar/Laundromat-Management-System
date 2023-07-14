@@ -30,26 +30,35 @@
 CREATE TABLE users (user_id INT NOT NULL AUTO_INCREMENT, firstname VARCHAR(50) NOT NULL, lastname VARCHAR(25) NOT NULL, user_address VARCHAR(200), total_orders INT NOT NULL, email VARCHAR(100) NOT NULL, user_password VARCHAR(100) NOT NULL, user_type INT NOT NULL, PRIMARY KEY (user_id));
 ```
 
+<br>
+
 **Create the `services` table:**
 ```sql
 CREATE TABLE services (service_id INT NOT NULL AUTO_INCREMENT, service_name VARCHAR(50), description TEXT, PRIMARY KEY (service_id));
 ```
+
+<br>
 
 **Create the `orders` table:**
 ```sql
 CREATE TABLE orders (order_id INT NOT NULL AUTO_INCREMENT, user_id INT NOT NULL, service_id INT NOT NULL, date_ordered DATETIME NOT NULL, remaining_time INT NOT NULL, status INT NOT NULL, weight DOUBLE NOT NULL, description TEXT, PRIMARY KEY (order_id));
 ```
 
+<br>
+
 **Create the `payments` table:**
 ```sql
 CREATE TABLE payments (payment_id INT NOT NULL AUTO_INCREMENT, order_id INT NOT NULL, payment_date DATETIME NOT NULL, payment_amount DOUBLE NOT NULL, PRIMARY KEY (payment_id));
 ```
+
+<br>
 
 **Create the `messages` table:**
 ```sql
 CREATE TABLE messages (message_id INT NOT NULL AUTO_INCREMENT, user_id INT NOT NULL, order_id INT NOT NULL, message_date DATETIME NOT NULL, message TEXT, PRIMARY KEY (message_id));
 ```
 
+<br>
 <br>
 
 **Insert an admin to `users` table:**
