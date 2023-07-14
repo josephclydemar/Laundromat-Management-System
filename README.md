@@ -34,14 +34,14 @@ CREATE TABLE users (user_id INT NOT NULL AUTO_INCREMENT, firstname VARCHAR(50) N
 
 **Create the `services` table:**
 ```sql
-CREATE TABLE services (service_id INT NOT NULL AUTO_INCREMENT, service_name VARCHAR(50), description TEXT, PRIMARY KEY (service_id));
+CREATE TABLE services (service_id INT NOT NULL AUTO_INCREMENT, service_name VARCHAR(50), service_description TEXT, PRIMARY KEY (service_id));
 ```
 
 <br>
 
 **Create the `orders` table:**
 ```sql
-CREATE TABLE orders (order_id INT NOT NULL AUTO_INCREMENT, user_id INT NOT NULL, service_id INT NOT NULL, date_ordered DATETIME NOT NULL, remaining_time INT NOT NULL, order_status INT NOT NULL, order_weight DOUBLE NOT NULL, description TEXT, PRIMARY KEY (order_id));
+CREATE TABLE orders (order_id INT NOT NULL AUTO_INCREMENT, user_id INT NOT NULL, service_id INT NOT NULL, date_ordered DATETIME NOT NULL, remaining_time INT NOT NULL, order_status INT NOT NULL, order_weight DOUBLE NOT NULL, order_description TEXT, PRIMARY KEY (order_id));
 ```
 
 <br>
