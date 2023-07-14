@@ -45,6 +45,11 @@ CREATE TABLE orders (order_id INT NOT NULL AUTO_INCREMENT, user_id INT NOT NULL,
 CREATE TABLE payments (payment_id INT NOT NULL AUTO_INCREMENT, order_id INT NOT NULL, payment_date DATETIME NOT NULL, payment_amount DOUBLE NOT NULL, PRIMARY KEY (payment_id));
 ```
 
+**Create the `messages` table:**
+```sql
+CREATE TABLE messages (message_id INT NOT NULL AUTO_INCREMENT, user_id INT NOT NULL, order_id INT NOT NULL, message_date DATETIME NOT NULL, message TEXT, PRIMARY KEY (payment_id));
+```
+
 <br>
 
 **Insert an admin to `users` table:**
