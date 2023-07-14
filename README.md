@@ -60,6 +60,7 @@ CREATE TABLE messages (message_id INT NOT NULL AUTO_INCREMENT, user_id INT NOT N
 
 <br>
 <br>
+<br>
 
 **Insert an admin into `users` table:**
 ```sql
