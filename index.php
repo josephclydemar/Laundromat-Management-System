@@ -21,9 +21,9 @@
         <form action="sign_up.php" method="POST">
             <input type="text" name="lastname" placeholder="Lastname" required>
             <input type="text" name="firstname" placeholder="Firstname" required>
-            <input type="text" name="customer_address" placeholder="Address" required>
+            <input type="text" name="user_address" placeholder="Address" required>
             <input type="email" name="email" placeholder="Email" required>
-            <input type="password" name="customer_password" placeholder="Password" required>
+            <input type="password" name="user_password" placeholder="Password" required>
             <input type="submit" name="signup" value="Sign-Up">
         </form>
     </div>

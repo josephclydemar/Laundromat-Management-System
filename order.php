@@ -3,7 +3,7 @@ include_once "database_connection.php";
     class Order
     {
         private $order_id;
-        private $customer_id;
+        private $user_id;
         private $service_type;
         private $laundry_weight;
         private $price;
@@ -11,9 +11,9 @@ include_once "database_connection.php";
         private $db_connection;
         private $pdo;
 
-        public function __construct($customer_id, $service_type, $laundry_weight, $price)
+        public function __construct($user_id, $service_type, $laundry_weight, $price)
         {
-            $this->customer_id = $customer_id;
+            $this->user_id = $user_id;
             $this->service_type = $service_type;
             $this->laundry_weight = $laundry_weight;
             $this->price = $price;
@@ -30,9 +30,9 @@ include_once "database_connection.php";
 
         public function createOrder()
         {
-            $sql_insert = "INSERT INTO orders (customer_id, service_type, laundry_weight, price) VALUES (:customer_id, :service_type, :laundry_weight, :price)";
+            $sql_insert = "INSERT INTO orders (user_id, service_type, laundry_weight, price) VALUES (:user_id, :service_type, :laundry_weight, :price)";
             $stmt = $this->pdo->prepare($sql_insert);
-            $stmt->execute(array(':customer_id'=>$this->customer_id, ':service_type'=>$this->service_type, ':laundry_weight,'=>$this->laundry_weight, ':price'=>$this->price));
+            $stmt->execute(array(':user_id'=>$this->user_id, ':service_type'=>$this->service_type, ':laundry_weight,'=>$this->laundry_weight, ':price'=>$this->price));
         }
 
         public function getOrderId()
