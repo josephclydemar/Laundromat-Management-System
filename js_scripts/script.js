@@ -31,13 +31,15 @@ order_weight.addEventListener('input', getOrderWeightValue);
 
 function getOrderWeightValue()
 {
+    let service_type_constant = 8;
+    let weight_constant = 5;
     let x = order_weight.value;
     console.log(x);
     // global_order_weight = order_weight.value;
     let order_price_label = document.getElementById('order_price_label');
     let order_price_input = document.getElementById('order_price');
 
-    let price_value = Math.round( 12 * ((5 * parseFloat(x)) + (5 * getOrderServiceChoiceValue())) );
+    let price_value = Math.round( 12 * ((weight_constant * parseFloat(x)) + (service_type_constant * getOrderServiceChoiceValue())) );
     order_price_label.innerText = price_value;
     order_price_input.value = price_value;
 }
