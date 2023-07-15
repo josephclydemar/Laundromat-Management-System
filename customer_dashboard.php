@@ -7,6 +7,8 @@
     $pdo = $db_conn->getPDO();
     // echo $_SESSION['user_id'];
     // echo 'SA GAWAS!!!!';
+
+    $order_status_words = array(1=>'Complete', 2=>'In-Progress', 3=>'Pending');
     if(isset($_GET['logout']))
     {
         session_destroy();
@@ -17,13 +19,11 @@
     if(isset($_SESSION['user_id']))
     {
         // echo $_SESSION['user_id'];
-        // $sql_select = "SELECT * FROM users WHERE user_id=:user_id";
-	    // $stmt = $pdo->prepare($sql_select);
-        // $stmt->execute(array(':user_id'=>$_SESSION['user_id']));
-	    // $select_query_result = $stmt->fetch(PDO::FETCH_ASSOC);
-        // foreach($select_query_result as $key => $value) {
-        //     echo $key.' : '.$value.'<br>';
-        // }
+
+        $sql_select_services = "SELECT * FROM services";
+	    $stmt = $pdo->query($sql_select_services);
+	    $all_services_info = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
         $sql_select = "SELECT * FROM users WHERE user_id=:user_id";
 	    $stmt = $pdo->prepare($sql_select);
         $stmt->execute(array(':user_id'=>$_SESSION['user_id']));
@@ -35,7 +35,7 @@
         if( isset($_POST['service_type']) && isset($_POST['weight']) && isset($_POST['order_price']) )
         {
             $time_today = date('Y-m-d H:i:s');
-            $customer->createOrder($_POST['service_type'], $time_today, 2, 2, $_POST['weight'], 'Hoy BRAD', $_POST['order_price']);
+            $customer->createOrder($_POST['service_type'], $time_today, 4, 3, $_POST['weight'], 'Hoy BRAD', $_POST['order_price']);
         }
         $select_query_result_orders = $customer->getMyOrders();
         $select_query_result_user = $customer->getMyInfo();
@@ -83,7 +83,9 @@
 
         <div class="user">
             <?php
-            echo $select_query_result_user['firstname'].' '.$select_query_result_user['lastname'];
+            echo '<span style="font-weight: bold;">'.$select_query_result_user['firstname'].' '.$select_query_result_user['lastname'].'</span>';
+            echo '<br>';
+            echo '<span style="font-weight: bold;">'.$select_query_result_user['user_id'].'</span>';
             ?>
         </div>
     </header>
@@ -106,10 +108,10 @@
                             <form method="POST">
                                 <!-- Form content goes here -->
                                 <select name="service_type" id="services" onchange="getOrderWeightValue()" required>
-                                    <option value="0" disabled selected>Service Type</option> 
-                                    <option value="2">Wash-Dry-Fold</option> 
-                                    <option value="3">Wash-Dry-Press</option> 
-                                    <option value="1">Press only</option>  
+                                    
+                                    <option value="1" selected>Press only</option> 
+                                    <option value="2">Wash-Dry-Fold</option>
+                                    <option value="3">Wash-Dry-Press</option>
                                 </select><br>
                                 <input type="number" name="weight" id="weight" min="1" max="20" autocomplete="off" placeholder="Input weight" value="1" required> <br>
                                 ₱<label id="order_price_label">0</label>
@@ -129,11 +131,10 @@
                                     </tr>
                                     <?php
                                     if($select_query_result_all_complete_orders) {
-                                        foreach($select_query_result_all_complete_orders as $key => $value) {
+                                        foreach($select_query_result_all_complete_orders as $record) {
                                             echo '<tr>';
-                                            foreach($value as $k => $v) {
-                                                echo '<td>'.$v.'</td>';
-                                            }
+                                            echo '<td>'.$record['order_id'].'</td>';
+                                            echo '<td>'.$record['order_status'].'</td>';
                                             echo '</tr>';
                                         }
                                     }
@@ -150,11 +151,10 @@
                             </tr>
                             <?php
                                 if($select_query_result_all_inprogress_orders) {
-                                    foreach($select_query_result_all_inprogress_orders as $key => $value) {
+                                    foreach($select_query_result_all_inprogress_orders as $record) {
                                         echo '<tr>';
-                                        foreach($value as $k => $v) {
-                                            echo '<td>'.$v.'</td>';
-                                        }
+                                        echo '<td>'.$record['order_id'].'</td>';
+                                        echo '<td>'.$record['order_status'].'</td>';
                                         echo '</tr>';
                                     }
                                 }
@@ -170,11 +170,10 @@
                             </tr>
                             <?php
                                 if($select_query_result_all_pending_orders) {
-                                    foreach($select_query_result_all_pending_orders as $key => $value) {
+                                    foreach($select_query_result_all_pending_orders as $record) {
                                         echo '<tr>';
-                                        foreach($value as $k => $v) {
-                                            echo '<td>'.$v.'</td>';
-                                        }
+                                        echo '<td>'.$record['order_id'].'</td>';
+                                        echo '<td>'.$record['order_status'].'</td>';
                                         echo '</tr>';
                                     }
                                 }
@@ -198,16 +197,23 @@
                                 <th>Order Number</th>
                                 <th>Date</th>
                                 <th>Type of Service</th>
-                                <th>Amount</th>
+                                <th>Amount (₱)</th>
                                 <th>Status</th>
                             </tr>
                             <?php
                             if(isset($select_query_result_orders)) {
-                                foreach($select_query_result_orders as $key => $value) {
+                                foreach($select_query_result_orders as $record) {
+                                    $sql_select_payment = "SELECT * FROM payments WHERE order_id=:order_id";
+	                                $stmt = $pdo->prepare($sql_select_payment);
+                                    $stmt->execute(array(':order_id'=>$record['order_id']));
+	                                $payment_info = $stmt->fetch(PDO::FETCH_ASSOC);
+
                                     echo '<tr>';
-                                    foreach($value as $k => $v) {
-                                        echo '<td>'.$v.'</td>';
-                                    }
+                                    echo '<td>'.$record['order_id'].'</td>';
+                                    echo '<td>'.$record['date_ordered'].'</td>';
+                                    echo '<td>'.$all_services_info[$record['service_id']-1]['service_name'].'</td>';
+                                    echo '<td>'.$payment_info['payment_amount'].'</td>';
+                                    echo '<td>'.$order_status_words[$record['order_status']].'</td>';
                                     echo '</tr>';
                                 }
                             }
