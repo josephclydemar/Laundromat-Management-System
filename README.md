@@ -76,7 +76,7 @@ INSERT INTO services (service_name, service_description) VALUES ("Wash, Dry", "T
 
 <br>
 
-**Insert a service into `orders` table:**
+**Insert an order into `orders` table:**
 ```sql
 INSERT INTO orders (user_id, service_id, date_ordered, remaining_time, order_status, order_weight, order_description) VALUES (13, 2, '2023-07-11 19:52:02', 234, 3, 4.56, 'Ahahahahha');
 ```
