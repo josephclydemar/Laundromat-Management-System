@@ -1,5 +1,6 @@
 <?php
 include_once "database_connection.php";
+include_once "payment.php";
     class Order
     {
         private $order_id;
@@ -14,7 +15,7 @@ include_once "database_connection.php";
         private $db_connection;
         private $pdo;
 
-        public function __construct($user_id, $service_id, $date_ordered , $remaining_time, $order_status, $order_weight, $order_description)
+        public function __construct($user_id, $service_id, $date_ordered , $remaining_time, $order_status, $order_weight, $order_description, $order_price)
         {
             $this->user_id = $user_id;
             $this->service_id = $service_id;
@@ -32,6 +33,8 @@ include_once "database_connection.php";
             $stmt = $this->pdo->query($sql_select);
             $last_order = $stmt->fetch(PDO::FETCH_ASSOC);
             $this->order_id = $last_order['order_id'];
+
+            new Payment($this->order_id, $this->date_ordered, $order_price);
         }
 
         public function createOrder()

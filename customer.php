@@ -58,7 +58,7 @@ include_once "database_connection.php";
                                 ));
         }
 
-        public function getuserId()
+        public function getUserId()
         {
             return $this->user_id;
         }
@@ -72,9 +72,9 @@ include_once "database_connection.php";
             return $user_query_result;
         }
 
-        public function createOrder($service_type, $date_ordered, $remaining_time, $order_status, $order_weight, $order_description) // Still Unsure
+        public function createOrder($service_type, $date_ordered, $remaining_time, $order_status, $order_weight, $order_description, $order_price)
         {
-            new Order($this->getuserId(), $service_type, $date_ordered, $remaining_time, $order_status, $order_weight, $order_description);
+            new Order($this->getUserId(), $service_type, $date_ordered, $remaining_time, $order_status, $order_weight, $order_description, $order_price);
         }
 
         public function getMyOrders()

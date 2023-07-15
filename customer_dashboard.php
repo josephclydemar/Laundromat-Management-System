@@ -32,10 +32,10 @@
         $customer = new Customer($user_info['firstname'], $user_info['lastname'], $user_info['user_address'], $user_info['email'], $user_info['user_password']);
         // echo $_SESSION['user_id'];
         // echo 'TRRUUEUUEE';
-        if( isset($_POST['service_type']) && isset($_POST['weight']) )
+        if( isset($_POST['service_type']) && isset($_POST['weight']) && isset($_POST['order_price']) )
         {
             $time_today = date('Y-m-d H:i:s');
-            $customer->createOrder($_POST['service_type'], $time_today, 2, 2, $_POST['weight'], 'Hoy BRAD');
+            $customer->createOrder($_POST['service_type'], $time_today, 2, 2, $_POST['weight'], 'Hoy BRAD', $_POST['order_price']);
         }
         $select_query_result_orders = $customer->getMyOrders();
         $select_query_result_user = $customer->getMyInfo();
@@ -62,6 +62,8 @@
 ?>
 
 
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -69,7 +71,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
-<body>
+<body onload="putPriceValue()">
     <header class="header">
         <div class="logo">
             Wash Matic
@@ -103,21 +105,18 @@
                         <div class="place-order-body">
                             <form method="POST">
                                 <!-- Form content goes here -->
-                                <select name="service_type" id="services">
-                                    <option value="" disabled selected>Service Type</option> 
-                                    <option value="1">Wash-Dry-Fold</option> 
-                                    <option value="2">Wash-Dry-Press</option> 
-                                    <option value="3">Press only</option>  
+                                <select name="service_type" id="services" onchange="getOrderWeightValue()" required>
+                                    <option value="0" disabled selected>Service Type</option> 
+                                    <option value="2">Wash-Dry-Fold</option> 
+                                    <option value="3">Wash-Dry-Press</option> 
+                                    <option value="1">Press only</option>  
                                 </select><br>
-                                <input type="number" name="weight" id="weight" min="3" autocomplete="off" placeholder="Input weight"> <br>
-                                <label>
-                                    PRICE
-                                </label>
+                                <input type="number" name="weight" id="weight" min="1" max="20" autocomplete="off" placeholder="Input weight" value="1" required> <br>
+                                ₱<label id="order_price_label">0</label>
+                                <input type="hidden" id="order_price" name="order_price" value="">
                                 <button type="submit" name="btn">Submit</button>
                             </form>
                         </div>
-                    
-                    
                 </div>
 
                 <div class="list">
@@ -506,6 +505,7 @@
             padding: 2px;
         }
     </style>
+    <script src="js_scripts/script.js"></script>
 </body>
 </html>
     
