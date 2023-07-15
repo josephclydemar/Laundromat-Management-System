@@ -40,7 +40,7 @@
                 
             // }
             $_SESSION['user_id'] = $verified_user_id;
-            header('Location: customer_track_orders.php');
+            header('Location: customer_dashboard.php');
             return;
         }
         else

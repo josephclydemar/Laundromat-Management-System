@@ -36,7 +36,7 @@
             $user_id = $new_customer->getuserId();
             // echo $new_customer->getuserId();
             $_SESSION['user_id'] = $user_id;
-            header('Location: customer_track_orders.php');
+            header('Location: customer_dashboard.php');
             return;
         }
     }
