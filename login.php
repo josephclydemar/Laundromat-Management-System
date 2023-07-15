@@ -2,7 +2,7 @@
     session_start();
     include_once "database_connection.php";
 
-    function authenticateUser($entered_email, $entered_password)
+    function verifyUser($entered_email, $entered_password)
     {
         $db_connection = new DatabaseConnection();
         $pdo = $db_connection->getPDO();
@@ -15,18 +15,18 @@
             $recorded_password = $select_query_result['user_password'];
             if($recorded_password == $entered_password)
             {
-                // Account exists, correct password.
+                // account exists, correct password.
                 return $select_query_result['user_id'];
             }
             else
             {
-                // Incorrect password.
+                // incorrect password.
                 return 0;
             }
         }
         else
         {
-            // Account does not exist.
+            // account does not exist.
             return 0;
         }
     }
@@ -34,11 +34,12 @@
     if(isset($_POST)) {
         $email = $_POST['email'];
         $password = $_POST['password'];
-        $id_authenticated_user = authenticateUser($email, $password);
-        if($id_authenticated_user != 0) {
-            if(isset($_SESSION['user_id'])) {
-                $_SESSION['user_id'] = $id_authenticated_user;
-            }
+        $verified_user_id = verifyUser($email, $password);
+        if($verified_user_id != 0) {
+            // if(isset($_SESSION['user_id'])) {
+                
+            // }
+            $_SESSION['user_id'] = $verified_user_id;
             header('Location: customer_track_orders.php');
             return;
         }

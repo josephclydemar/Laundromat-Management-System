@@ -25,15 +25,26 @@ include_once "database_connection.php";
 
             $this->db_connection = new DatabaseConnection();
             $this->pdo = $this->db_connection->getPDO();
-            
-            $this->createuser($firstname, $lastname, $user_address, $email, $user_password);
-            $sql_select = "SELECT * FROM users ORDER BY user_id DESC";
-            $stmt = $this->pdo->query($sql_select);
-            $last_user = $stmt->fetch(PDO::FETCH_ASSOC);
-            $this->user_id = $last_user['user_id'];
+
+            $sql_select = "SELECT * FROM users WHERE emaiL=:email";
+	        $stmt = $this->pdo->prepare($sql_select);
+            $stmt->execute(array(':email'=>$email));
+	        $select_user_result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if(!$select_user_result)
+            {
+                $this->createUser($firstname, $lastname, $user_address, $email, $user_password);
+                $sql_select = "SELECT * FROM users ORDER BY user_id DESC";
+                $stmt = $this->pdo->query($sql_select);
+                $last_user = $stmt->fetch(PDO::FETCH_ASSOC);
+                $this->user_id = $last_user['user_id'];
+            }
+            else {
+                $this->user_id = $select_user_result['user_id'];
+            }
         }
 
-        public function createuser()
+        public function createUser()
         {
             $total_orders = 0;
             $insert_new_user = "INSERT INTO users (firstname, lastname, user_address, total_orders, email, user_password) VALUES (:firstname, :lastname, :user_address, :total_orders, :email, :user_password)";
@@ -52,22 +63,30 @@ include_once "database_connection.php";
             return $this->user_id;
         }
 
-        public function getuserInfo()
+        public function getMyInfo()
         {
             $sql_select = "SELECT * FROM users WHERE user_id=:user_id";
             $stmt = $this->pdo->prepare($sql_select);
             $stmt->execute(array(':user_id'=>$this->user_id));
-            $userQueryResult = $stmt->fetch(PDO::FETCH_ASSOC);
-            return $userQueryResult;
+            $user_query_result = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $user_query_result;
         }
 
-        public function createOnlineOrder() // Still Unsure
+        public function createOrder($service_type, $date_ordered, $remaining_time, $order_status, $order_weight, $order_description) // Still Unsure
         {
-            $service_type = $_POST['service_type'];
-            $laundry_weight = $_POST['laundry_weight'];
-            $price = $_POST['price'];
-            new Order($this->getuserId(), $service_type, $laundry_weight, $price);
-            $this->total_orders += 1;
+            new Order($this->getuserId(), $service_type, $date_ordered, $remaining_time, $order_status, $order_weight, $order_description);
+        }
+
+        public function getMyOrders()
+        {
+            // get all user orders
+            $sql_select = "SELECT order_id, date_ordered, service_id, order_weight, order_status FROM orders WHERE user_id=:user_id";
+	        $stmt = $this->pdo->prepare($sql_select);
+            $stmt->execute(array(':user_id'=>$this->user_id));
+	        $select_orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            // var_dump($select_query_result_orders);
+            // echo $select_query_result_orders;
+            return $select_orders;
         }
     }
 ?>
