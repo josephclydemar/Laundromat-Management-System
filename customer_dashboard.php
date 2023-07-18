@@ -69,9 +69,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>WashMatic</title>
+    <link rel="icon" type="image/x-icon" href="imgs/washing-machine_icon-icons.com_60734.ico">
 </head>
 <body onload="putPriceValue()">
+    
     <header class="header">
         <div class="logo">
             Wash Matic
