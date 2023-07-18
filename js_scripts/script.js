@@ -8,7 +8,7 @@ function putPriceValue()
     let order_price_label = document.getElementById('order_price_label');
     let order_price_input = document.getElementById('order_price');
 
-    let price_value = 60;
+    let price_value = 70;
     order_price_label.innerText = price_value;
     order_price_input.value = price_value;
 }
