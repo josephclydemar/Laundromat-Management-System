@@ -41,7 +41,7 @@ CREATE TABLE services (service_id INT NOT NULL AUTO_INCREMENT, service_name VARC
 
 **Create the `orders` table:**
 ```sql
-CREATE TABLE orders (order_id INT NOT NULL AUTO_INCREMENT, user_id INT NOT NULL, service_id INT NOT NULL, date_ordered DATETIME NOT NULL, remaining_time INT NOT NULL, order_status INT NOT NULL, order_weight DOUBLE NOT NULL, order_description TEXT, PRIMARY KEY (order_id));
+CREATE TABLE orders (order_id INT NOT NULL AUTO_INCREMENT, user_id INT NOT NULL, service_id INT NOT NULL, date_ordered DATETIME NOT NULL, date_finish DATETIME NOT NULL, remaining_time INT NOT NULL, order_status INT NOT NULL, order_weight DOUBLE NOT NULL, order_description TEXT, PRIMARY KEY (order_id));
 ```
 
 <br>
@@ -78,7 +78,7 @@ INSERT INTO services (service_name, service_description) VALUES ("Wash, Dry", "T
 
 **Insert an order into `orders` table:**
 ```sql
-INSERT INTO orders (user_id, service_id, date_ordered, remaining_time, order_status, order_weight, order_description) VALUES (13, 2, '2023-07-11 19:52:02', 234, 3, 4.56, 'Ahahahahha');
+INSERT INTO orders (user_id, service_id, date_ordered, date_finish, remaining_time, order_status, order_weight, order_description) VALUES (13, 2, '2023-07-11 19:52:02', '2023-07-11 22:52:02', 234, 3, 4.56, 'Ahahahahha');
 ```
 
 <br>
