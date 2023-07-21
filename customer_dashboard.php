@@ -84,26 +84,13 @@
         $stmt->execute(array(':user_id'=>$customer->getUserId(), ':order_status'=>3));
 	    $select_query_result_all_pending_orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        // if(isset($select_query_result_orders))
-        // {
-        //     foreach($select_query_result_orders as $record)
-        //     {
-        //         $time_today_for_strtotime = date('d-m-Y H:i:s');
-        //         $time_now = strtotime($time_today_for_strtotime);
-        //         $date_finish_database_split = explode(' ', $record['date_finish']);
-        //         $date_finish_split = explode('-', $date_finish_database_split[0]);
-        //         $date_finish_for_strtotime = $date_finish_split[2].'-'.$date_finish_split[1].'-'.$date_finish_split[0].' '.$date_finish_database_split[1];
-        //         $time_to_finish = strtotime($date_finish_for_strtotime);
-
-        //         $updated_remaining_time = $time_to_finish - $time_now;
-        //         $sql_update_order = "UPDATE orders SET remaining_time=:remaining_time WHERE order_id=:order_id";
-        //         $stmt = $pdo->prepare($sql_update_order);
-        //         $stmt->execute(array(
-        //                              ':remaining_time'=>$updated_remaining_time,
-        //                              ':order_id'=>$record['order_id']
-        //                             ));
-        //     }
-        // }
+        if(isset($_POST['user_id']) && isset($_POST['order_id']))
+        {
+            $_SESSION['user_id'] = $_POST['user_id'];
+            $_SESSION['order_id'] = $_POST['order_id'];
+            header('Location: customer_feedback.php');
+            return;
+        }
     }
     else {
         header('Location: index.php');
@@ -255,6 +242,7 @@
                                 <th>Type of Service</th>
                                 <th>Amount (₱)</th>
                                 <th>Status</th>
+                                <th>Feedback</th>
                             </tr>
                             <?php
                             if(isset($select_query_result_orders)) {
@@ -272,6 +260,7 @@
                                     echo '<td>'.$all_services_info[$record['service_id']-1]['service_name'].'</td>';
                                     echo '<td>'.$payment_info['payment_amount'].'</td>';
                                     echo '<td>'.$order_status_words[$record['order_status']].'</td>';
+                                    echo '<td><form method="POST"><input type="hidden" name="order_id" value="'.$record['order_id'].'"><input type="hidden" name="user_id" value="'.$record['user_id'].'"><input type="submit" name="feedback" value="Comment"></form></td>';
                                     echo '</tr>';
                                     
                                 }
