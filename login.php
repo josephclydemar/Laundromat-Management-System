@@ -39,9 +39,26 @@
             // if(isset($_SESSION['user_id'])) {
                 
             // }
+            echo $select_query_result['user_type'];
+            $db_connection = new DatabaseConnection();
+            $pdo = $db_connection->getPDO();
+            $sql_select = "SELECT * FROM users WHERE user_id=:user_id";
+            $stmt = $pdo->prepare($sql_select);
+            $stmt->execute(array(':user_id'=>$verified_user_id));
+	        $select_query_result = $stmt->fetch(PDO::FETCH_ASSOC);
+
             $_SESSION['user_id'] = $verified_user_id;
-            header('Location: customer_dashboard.php');
-            return;
+
+            if($select_query_result['user_type'] == 0)
+            {
+                header('Location: customer_dashboard.php');
+                return;
+            }
+            else
+            {
+                header('Location: admin_dashboard.php');
+                return;
+            }
         }
         else
         {

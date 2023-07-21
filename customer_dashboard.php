@@ -29,6 +29,12 @@
         $stmt->execute(array(':user_id'=>$_SESSION['user_id']));
 	    $user_info = $stmt->fetch(PDO::FETCH_ASSOC);
 
+        if($user_info['user_type'] == 1)
+        {
+            header('Location: admin_dashboard.php');
+            return;
+        }
+
         $customer = new Customer($user_info['firstname'], $user_info['lastname'], $user_info['user_address'], $user_info['email'], $user_info['user_password']);
         // echo $_SESSION['user_id'];
         // echo 'TRRUUEUUEE';
@@ -59,23 +65,23 @@
             return;
         }
 
-        $select_query_result_orders = $customer->getMyOrders();
+        $select_query_result_orders = $customer->getMyOrders(1);
         $select_query_result_user = $customer->getMyInfo();
 
         // getting all complete orders
-        $sql_select_complete_orders = "SELECT order_id, order_status FROM orders WHERE order_status=:order_status";
+        $sql_select_complete_orders = "SELECT order_id, order_status FROM orders WHERE user_id=:user_id AND order_status=:order_status";
 	    $stmt = $pdo->prepare($sql_select_complete_orders);
-        $stmt->execute(array(':order_status'=>1));
+        $stmt->execute(array(':user_id'=>$customer->getUserId(), ':order_status'=>1));
 	    $select_query_result_all_complete_orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        $sql_select_inprogress_orders = "SELECT order_id, order_status FROM orders WHERE order_status=:order_status";
+        $sql_select_inprogress_orders = "SELECT order_id, order_status FROM orders WHERE user_id=:user_id AND order_status=:order_status";
 	    $stmt = $pdo->prepare($sql_select_inprogress_orders);
-        $stmt->execute(array(':order_status'=>2));
+        $stmt->execute(array(':user_id'=>$customer->getUserId(), ':order_status'=>2));
 	    $select_query_result_all_inprogress_orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        $sql_select_pending_orders = "SELECT order_id, order_status FROM orders WHERE order_status=:order_status";
+        $sql_select_pending_orders = "SELECT order_id, order_status FROM orders WHERE user_id=:user_id AND order_status=:order_status";
 	    $stmt = $pdo->prepare($sql_select_pending_orders);
-        $stmt->execute(array(':order_status'=>3));
+        $stmt->execute(array(':user_id'=>$customer->getUserId(), ':order_status'=>3));
 	    $select_query_result_all_pending_orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         // if(isset($select_query_result_orders))
@@ -100,7 +106,8 @@
         // }
     }
     else {
-        // echo 'FAAAAALLLLSESS';
+        header('Location: index.php');
+        return;
     }
 ?>
 

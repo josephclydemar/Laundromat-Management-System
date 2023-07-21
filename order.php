@@ -1,6 +1,6 @@
 <?php
-include_once "database_connection.php";
-include_once "payment.php";
+    include_once "database_connection.php";
+    include_once "payment.php";
     class Order
     {
         private $order_id;

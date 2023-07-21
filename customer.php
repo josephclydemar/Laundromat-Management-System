@@ -1,6 +1,6 @@
 <?php
-include_once "order.php";
-include_once "database_connection.php";
+    include_once "order.php";
+    include_once "database_connection.php";
 
     class Customer
     {
@@ -77,12 +77,15 @@ include_once "database_connection.php";
             new Order($this->getUserId(), $service_type, $date_ordered, $date_finish, $remaining_time, $order_status, $order_weight, $order_description, $order_price);
         }
 
-        public function getMyOrders()
+        public function getMyOrders($order_status)
         {
             // get all user orders
-            $sql_select = "SELECT order_id, date_ordered, date_finish, remaining_time, service_id, order_weight, order_status FROM orders WHERE user_id=:user_id";
+            $sql_select = "SELECT order_id, date_ordered, date_finish, remaining_time, service_id, order_weight, order_status FROM orders WHERE user_id=:user_id AND NOT order_status=:order_status";
 	        $stmt = $this->pdo->prepare($sql_select);
-            $stmt->execute(array(':user_id'=>$this->user_id));
+            $stmt->execute(array(
+                                 ':user_id'=>$this->user_id,
+                                 ':order_status'=>$order_status
+                                ));
 	        $select_orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
             // var_dump($select_query_result_orders);
             // echo $select_query_result_orders;

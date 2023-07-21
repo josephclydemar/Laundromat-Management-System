@@ -30,13 +30,24 @@
             $time_to_finish = strtotime($date_finish_for_strtotime);
     
             $updated_remaining_time = $time_to_finish - $time_now;
-            $sql_update_order = "UPDATE orders SET remaining_time=:remaining_time WHERE order_id=:order_id";
-            $stmt = $pdo->prepare($sql_update_order);
+            $sql_update_order_remaining_time = "UPDATE orders SET remaining_time=:remaining_time WHERE order_id=:order_id";
+            $stmt = $pdo->prepare($sql_update_order_remaining_time);
             $stmt->execute(array(
                                  ':remaining_time'=>$updated_remaining_time,
                                  ':order_id'=>$record['order_id']
                                 ));
             echo $record['remaining_time'];
+            if($updated_remaining_time <= 0)
+            {
+                $sql_update_order_status = "UPDATE orders SET order_status=:order_status WHERE order_id=:order_id";
+                $stmt = $pdo->prepare($sql_update_order_status);
+                $stmt->execute(array(
+                                     ':order_status'=>1,
+                                     ':order_id'=>$record['order_id']
+                                    ));
+                // header('Location: stepping_point.php');
+                // return;
+            }
         }
     }
     
