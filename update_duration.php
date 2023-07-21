@@ -45,7 +45,7 @@
                                      ':order_status'=>1,
                                      ':order_id'=>$record['order_id']
                                     ));
-                // header('Location: stepping_point.php');
+                // header('Location: customer_dashboard.php');
                 // return;
             }
         }

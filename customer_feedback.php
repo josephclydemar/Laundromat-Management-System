@@ -26,6 +26,12 @@
             header('Location: customer_feedback.php');
             return;
         }
+        
+        if(isset($_GET['back']))
+        {
+            header('Location: customer_dashboard.php');
+            return;
+        }
     }
     else
     {
@@ -44,6 +50,14 @@
     <title>Document</title>
 </head>
 <body>
+    <form method="GET">
+        <input type="submit" name="back" value="<< BACK">
+    </form>
+    <h1>
+        <?php
+            echo 'ORDER_ID: '.$_SESSION['order_id'];
+        ?>
+    </h1>
     <div id="messages">
         <?php
         foreach($customer_mesages as $key => $value)

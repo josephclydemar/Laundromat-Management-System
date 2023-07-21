@@ -92,7 +92,12 @@ for(let i=0; i<my_orders.length; i++)
     xhr[i].onload = function()
     {
         let serverResponse = document.getElementById(my_orders[i].id);
-        serverResponse.innerHTML = this.responseText;
+        let response_data = this.responseText;
+        serverResponse.innerHTML = response_data;
+        if(response_data <= 0)
+        {
+            location.reload();
+        }
     };
 }
 
