@@ -32,21 +32,29 @@
         $customer = new Customer($user_info['firstname'], $user_info['lastname'], $user_info['user_address'], $user_info['email'], $user_info['user_password']);
         // echo $_SESSION['user_id'];
         // echo 'TRRUUEUUEE';
-        if( isset($_POST['service_type']) && isset($_POST['weight']) && isset($_POST['order_price']) )
+        if( isset($_POST['service_type']) && isset($_POST['weight']) && isset($_POST['order_price']) && isset($_POST['order_duration']) )
         {
-            $time_today_for_strtotime = date('d-m-Y H:i:s');
-            $time_remaining = 4;
+            $time_today_SAYUP = date('d-m-Y H:i:s');
+            $time_remaining = ((int)$_POST['order_duration']) * 3600;
             $order_status = 3;
+            $time_offset = (int)$_POST['order_duration'];
 
-            $date_and_time_split = explode(' ', $time_today_for_strtotime);
+            $date_and_time_split = explode(' ', $time_today_SAYUP);
             $hour_minute_second_split = explode(':', $date_and_time_split[1]);
             $hour_ordered = (int)$hour_minute_second_split[0];
 
             $date_split_for_database_format = explode('-', $date_and_time_split[0]);
             $time_today = $date_split_for_database_format[2].'-'.$date_split_for_database_format[1].'-'.$date_split_for_database_format[0].' '.$date_and_time_split[1];
 
-            $date_finish = $date_split_for_database_format[2].'-'.$date_split_for_database_format[1].'-'.$date_split_for_database_format[0].' '.($hour_ordered+$time_remaining).':'.$hour_minute_second_split[1].':'.$hour_minute_second_split[2];
-            $customer->createOrder($_POST['service_type'], $time_today, $date_finish, $time_remaining, $order_status, $_POST['weight'], 'Hoy BRAD', $_POST['order_price']);
+            // $date_day_split_for_database_format = (int)$date_split_for_database_format[0];
+            $time_duration = $hour_ordered + $time_offset;
+            // if( $time_duration >= 12 )
+            // {
+            //     $time_duration = 0;
+            //     $date_day_split_for_database_format += 1;
+            // }
+            $date_finish = $date_split_for_database_format[2].'-'.$date_split_for_database_format[1].'-'.($date_split_for_database_format[0]).' '.$time_duration.':'.$hour_minute_second_split[1].':'.$hour_minute_second_split[2];
+            $customer->createOrder($_POST['service_type'], $time_today, $date_finish, $time_remaining, $order_status, $_POST['weight'], 'Hoy HEHE', $_POST['order_price']);
             header('Location: customer_dashboard.php');
             return;
         }
@@ -69,6 +77,27 @@
 	    $stmt = $pdo->prepare($sql_select_pending_orders);
         $stmt->execute(array(':order_status'=>3));
 	    $select_query_result_all_pending_orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        // if(isset($select_query_result_orders))
+        // {
+        //     foreach($select_query_result_orders as $record)
+        //     {
+        //         $time_today_for_strtotime = date('d-m-Y H:i:s');
+        //         $time_now = strtotime($time_today_for_strtotime);
+        //         $date_finish_database_split = explode(' ', $record['date_finish']);
+        //         $date_finish_split = explode('-', $date_finish_database_split[0]);
+        //         $date_finish_for_strtotime = $date_finish_split[2].'-'.$date_finish_split[1].'-'.$date_finish_split[0].' '.$date_finish_database_split[1];
+        //         $time_to_finish = strtotime($date_finish_for_strtotime);
+
+        //         $updated_remaining_time = $time_to_finish - $time_now;
+        //         $sql_update_order = "UPDATE orders SET remaining_time=:remaining_time WHERE order_id=:order_id";
+        //         $stmt = $pdo->prepare($sql_update_order);
+        //         $stmt->execute(array(
+        //                              ':remaining_time'=>$updated_remaining_time,
+        //                              ':order_id'=>$record['order_id']
+        //                             ));
+        //     }
+        // }
     }
     else {
         // echo 'FAAAAALLLLSESS';
@@ -131,8 +160,10 @@
                                     <option value="3">Wash-Dry-Press</option>
                                 </select><br>
                                 <input type="number" name="weight" id="weight" min="1" max="20" autocomplete="off" placeholder="Input weight" value="1" required> <br>
+                                Duration:<label id="order_duration_label"></label>hr<br>
                                 ₱<label id="order_price_label">0</label>
                                 <input type="hidden" id="order_price" name="order_price" value="">
+                                <input type="hidden" id="order_duration" name="order_duration" value="">
                                 <button type="submit" name="btn">Submit</button>
                             </form>
                         </div>
@@ -229,11 +260,13 @@
                                     echo '<tr>';
                                     echo '<td>'.$record['order_id'].'</td>';
                                     echo '<td>'.$record['date_ordered'].'</td>';
-                                    echo '<td>'.$record['remaining_time'].'</td>';
+                                    echo '<td class="remaining_time_class" id="_'.$record['order_id'].'">'.$record['remaining_time'].'</td>';
+                                    // echo '<td>'.($time_to_finish-$time_now).'</td>';
                                     echo '<td>'.$all_services_info[$record['service_id']-1]['service_name'].'</td>';
                                     echo '<td>'.$payment_info['payment_amount'].'</td>';
                                     echo '<td>'.$order_status_words[$record['order_status']].'</td>';
                                     echo '</tr>';
+                                    
                                 }
                             }
                             ?>

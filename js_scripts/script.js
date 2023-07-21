@@ -7,10 +7,15 @@ function putPriceValue()
 {
     let order_price_label = document.getElementById('order_price_label');
     let order_price_input = document.getElementById('order_price');
-
     let price_value = 70;
     order_price_label.innerText = price_value;
     order_price_input.value = price_value;
+
+    let order_duration_label = document.getElementById('order_duration_label');
+    let order_duration_input = document.getElementById('order_duration');
+    let duration_value = 1;
+    order_duration_label.innerText = duration_value;
+    order_duration_input.value = duration_value;
 }
 
 
@@ -33,15 +38,23 @@ function getOrderWeightValue()
 {
     let service_type_constant = 35;
     let weight_constant = 2;
-    let x = order_weight.value;
-    console.log(x);
+    let duration_constant = 0.02;
+    let order_weight_value = order_weight.value;
+    console.log(order_weight_value);
     // global_order_weight = order_weight.value;
     let order_price_label = document.getElementById('order_price_label');
     let order_price_input = document.getElementById('order_price');
 
-    let price_value = Math.round( ((weight_constant * parseFloat(x)) * (service_type_constant * getOrderServiceChoiceValue())) );
+    let order_duration_label = document.getElementById('order_duration_label');
+    let order_duration_input = document.getElementById('order_duration');
+
+    let price_value = Math.round( ((weight_constant * parseFloat(order_weight_value)) * (service_type_constant * getOrderServiceChoiceValue())) );
     order_price_label.innerText = price_value;
     order_price_input.value = price_value;
+
+    let duration_value = Math.round( ((duration_constant * parseFloat(order_weight_value)) * (service_type_constant * getOrderServiceChoiceValue())) );
+    order_duration_label.innerText = duration_value;
+    order_duration_input.value = duration_value;
 }
 
 
@@ -57,3 +70,40 @@ function getOrderServiceChoiceValue()
     // var value = e.value;
     // var text = e.options[e.selectedIndex].text;
 }
+
+
+
+
+
+
+
+let xhr = [];
+let my_orders = document.getElementsByClassName('remaining_time_class');
+console.log(my_orders);
+
+for(let i=0; i<my_orders.length; i++)
+{
+    console.log(my_orders[i].id);
+    xhr.push(new XMLHttpRequest());
+}
+console.log(xhr);
+for(let i=0; i<my_orders.length; i++)
+{
+    xhr[i].onload = function()
+    {
+        let serverResponse = document.getElementById(my_orders[i].id);
+        serverResponse.innerHTML = this.responseText;
+    };
+}
+
+
+
+setInterval(function() {
+    for(let i=0; i<my_orders.length; i++)
+    {
+        xhr[i].open('POST', 'update_duration.php');
+        xhr[i].setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+        xhr[i].send(`remaining_time${my_orders[i].id}=goo`);
+    }
+}, 500);
+
