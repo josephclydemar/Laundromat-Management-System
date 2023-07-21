@@ -72,15 +72,15 @@ include_once "database_connection.php";
             return $user_query_result;
         }
 
-        public function createOrder($service_type, $date_ordered, $remaining_time, $order_status, $order_weight, $order_description, $order_price)
+        public function createOrder($service_type, $date_ordered, $date_finish, $remaining_time, $order_status, $order_weight, $order_description, $order_price)
         {
-            new Order($this->getUserId(), $service_type, $date_ordered, $remaining_time, $order_status, $order_weight, $order_description, $order_price);
+            new Order($this->getUserId(), $service_type, $date_ordered, $date_finish, $remaining_time, $order_status, $order_weight, $order_description, $order_price);
         }
 
         public function getMyOrders()
         {
             // get all user orders
-            $sql_select = "SELECT order_id, date_ordered, service_id, order_weight, order_status FROM orders WHERE user_id=:user_id";
+            $sql_select = "SELECT order_id, date_ordered, remaining_time, service_id, order_weight, order_status FROM orders WHERE user_id=:user_id";
 	        $stmt = $this->pdo->prepare($sql_select);
             $stmt->execute(array(':user_id'=>$this->user_id));
 	        $select_orders = $stmt->fetchAll(PDO::FETCH_ASSOC);

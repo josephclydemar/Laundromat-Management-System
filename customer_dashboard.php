@@ -34,9 +34,23 @@
         // echo 'TRRUUEUUEE';
         if( isset($_POST['service_type']) && isset($_POST['weight']) && isset($_POST['order_price']) )
         {
-            $time_today = date('Y-m-d H:i:s');
-            $customer->createOrder($_POST['service_type'], $time_today, 4, 3, $_POST['weight'], 'Hoy BRAD', $_POST['order_price']);
+            $time_today_for_strtotime = date('d-m-Y H:i:s');
+            $time_remaining = 4;
+            $order_status = 3;
+
+            $date_and_time_split = explode(' ', $time_today_for_strtotime);
+            $hour_minute_second_split = explode(':', $date_and_time_split[1]);
+            $hour_ordered = (int)$hour_minute_second_split[0];
+
+            $date_split_for_database_format = explode('-', $date_and_time_split[0]);
+            $time_today = $date_split_for_database_format[2].'-'.$date_split_for_database_format[1].'-'.$date_split_for_database_format[0].' '.$date_and_time_split[1];
+
+            $date_finish = $date_split_for_database_format[2].'-'.$date_split_for_database_format[1].'-'.$date_split_for_database_format[0].' '.($hour_ordered+$time_remaining).':'.$hour_minute_second_split[1].':'.$hour_minute_second_split[2];
+            $customer->createOrder($_POST['service_type'], $time_today, $date_finish, $time_remaining, $order_status, $_POST['weight'], 'Hoy BRAD', $_POST['order_price']);
+            header('Location: customer_dashboard.php');
+            return;
         }
+
         $select_query_result_orders = $customer->getMyOrders();
         $select_query_result_user = $customer->getMyInfo();
 
@@ -71,6 +85,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WashMatic</title>
     <link rel="icon" type="image/x-icon" href="imgs/washing-machine_icon-icons.com_60734.ico">
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous"> -->
 </head>
 <body onload="putPriceValue()">
     
@@ -198,6 +213,7 @@
                             <tr>
                                 <th>Order Number</th>
                                 <th>Date</th>
+                                <th>Remaining Time</th>
                                 <th>Type of Service</th>
                                 <th>Amount (₱)</th>
                                 <th>Status</th>
@@ -213,6 +229,7 @@
                                     echo '<tr>';
                                     echo '<td>'.$record['order_id'].'</td>';
                                     echo '<td>'.$record['date_ordered'].'</td>';
+                                    echo '<td>'.$record['remaining_time'].'</td>';
                                     echo '<td>'.$all_services_info[$record['service_id']-1]['service_name'].'</td>';
                                     echo '<td>'.$payment_info['payment_amount'].'</td>';
                                     echo '<td>'.$order_status_words[$record['order_status']].'</td>';

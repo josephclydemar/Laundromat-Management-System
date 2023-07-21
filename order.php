@@ -6,7 +6,8 @@ include_once "payment.php";
         private $order_id;
         private $user_id;
         private $service_id;
-        private $date_ordered ;
+        private $date_ordered;
+        private $date_finish;
         private $remaining_time;
         private $order_status;
         private $order_weight;
@@ -15,11 +16,12 @@ include_once "payment.php";
         private $db_connection;
         private $pdo;
 
-        public function __construct($user_id, $service_id, $date_ordered , $remaining_time, $order_status, $order_weight, $order_description, $order_price)
+        public function __construct($user_id, $service_id, $date_ordered, $date_finish, $remaining_time, $order_status, $order_weight, $order_description, $order_price)
         {
             $this->user_id = $user_id;
             $this->service_id = $service_id;
-            $this->date_ordered  = $date_ordered ;
+            $this->date_ordered  = $date_ordered;
+            $this->date_finish = $date_finish;
             $this->remaining_time = $remaining_time;
             $this->order_status = $order_status;
             $this->order_weight = $order_weight;
@@ -39,12 +41,13 @@ include_once "payment.php";
 
         public function createOrder()
         {
-            $sql_insert = "INSERT INTO orders (user_id, service_id, date_ordered, remaining_time, order_status, order_weight, order_description) VALUES (:user_id, :service_id, :date_ordered , :remaining_time, :order_status, :order_weight, :order_description)";
+            $sql_insert = "INSERT INTO orders (user_id, service_id, date_ordered, date_finish, remaining_time, order_status, order_weight, order_description) VALUES (:user_id, :service_id, :date_ordered , :date_finish, :remaining_time, :order_status, :order_weight, :order_description)";
             $stmt = $this->pdo->prepare($sql_insert);
             $stmt->execute(array(
                                  ':user_id'=>$this->user_id,
                                  ':service_id'=>$this->service_id,
                                  ':date_ordered'=>$this->date_ordered,
+                                 ':date_finish'=>$this->date_finish,
                                  ':remaining_time'=>$this->remaining_time,
                                  ':order_status'=>$this->order_status,
                                  ':order_weight'=>$this->order_weight,
