@@ -21,6 +21,7 @@
 
         $admin = new Admin($user_info['firstname'], $user_info['lastname'], $user_info['user_address'], $user_info['email'], $user_info['user_password']);
         $my_info = $admin->getMyInfo();
+        echo '<h1>ADMIN SIDE</h1>';
         echo $my_info['user_id'].'<br>';
         echo $my_info['firstname'].'<br>';
         echo $my_info['lastname'].'<br>';

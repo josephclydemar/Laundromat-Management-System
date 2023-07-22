@@ -83,14 +83,25 @@
             return $select_customers_result;
         }
 
-        public function getCustomerOrderMessages($order_id)
+        public function createMessage($order_id, $message_date, $message)
+        {
+            $insert_new_message = "INSERT INTO messages (user_id, order_id, message_date, message) VALUES (:user_id, :order_id, :message_date, :message)";
+            $stmt = $this->pdo->prepare($insert_new_message);
+            $stmt->execute(array(
+                                 ':user_id'=>$this->user_id,
+                                 ':order_id'=>$order_id,
+                                 ':message_date'=>$message_date,
+                                 ':message'=>$message
+                                ));
+        }
+
+        public function getOrderMessages($order_id)
         {
 
-            $select_all_customer_orders = "SELECT * FROM messages WHERE order_id=:order_id AND NOT user_id=:user_id";
+            $select_all_customer_orders = "SELECT * FROM messages WHERE order_id=:order_id";
             $stmt = $this->pdo->prepare($select_all_customer_orders);
             $stmt->execute(array(
-                                 ':order_id'=>$order_id,
-                                 ':user_id'=>$this->user_id
+                                 ':order_id'=>$order_id
                                 ));
             $select_customer_orders_result = $stmt->fetchAll(PDO::FETCH_ASSOC);
             return $select_customer_orders_result;

@@ -13,6 +13,14 @@
             header('Location: admin_dashboard.php');
             return;
         }
+
+        if(isset($_POST['order_id']) && isset($_POST['customer_id']) && isset($_POST['feedback']))
+        {
+            $_SESSION['order_id'] = $_POST['order_id'];
+            header('Location: admin_feedback.php');
+            return;
+        }
+
         $order_status_words = array(1=>'Complete', 2=>'In-Progress', 3=>'Pending');
 
         $sql_select_services = "SELECT * FROM services";
@@ -27,6 +35,7 @@
 
         $admin = new Admin($user_info['firstname'], $user_info['lastname'], $user_info['user_address'], $user_info['email'], $user_info['user_password']);
         $my_info = $admin->getMyInfo();
+        echo '<h1>ADMIN SIDE</h1>';
         echo $my_info['user_id'].'<br>';
         echo $my_info['firstname'].'<br>';
         echo $my_info['lastname'].'<br>';
@@ -77,7 +86,7 @@
                         echo '<td>'.$all_services_info[$record['service_id']-1]['service_name'].'</td>';
                         echo '<td>'.$payment_info['payment_amount'].'</td>';
                         echo '<td>'.$order_status_words[$record['order_status']].'</td>';
-                        echo '<td><form method="POST"><input type="hidden" name="order_id" value="'.$record['order_id'].'"><input type="hidden" name="user_id" value="'.$record['user_id'].'"><input type="submit" name="feedback" value="See Comment"></form></td>';
+                        echo '<td><form method="POST"><input type="hidden" name="order_id" value="'.$record['order_id'].'"><input type="hidden" name="customer_id" value="'.$record['user_id'].'"><input type="submit" name="feedback" value="See Comment"></form></td>';
                         echo '</tr>';
                         
                     }
@@ -96,7 +105,7 @@
             border: 1px solid #000;
         }
     </style>
-    <script src="js_scripts/admin_scripts.js"></script>
+    <!-- <script src="js_scripts/admin_scripts.js"></script> -->
 </body>
 </html>
 

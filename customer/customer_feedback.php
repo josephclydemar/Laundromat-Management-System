@@ -17,7 +17,12 @@
                             ));
 	    $user_info = $stmt->fetch(PDO::FETCH_ASSOC);
         $customer = new Customer($user_info['firstname'], $user_info['lastname'], $user_info['user_address'], $user_info['email'], $user_info['user_password']);
-        $customer_mesages = $customer->getMyMessageThread($_SESSION['order_id']);
+        $customer_messages = $customer->getMyMessageThread($_SESSION['order_id']);
+        echo '<h1>CUSTOMER SIDE</h1>';
+        echo $user_info['user_id'].'<br>';
+        echo $user_info['firstname'].'<br>';
+        echo $user_info['lastname'].'<br>';
+        echo $user_info['email'].'<br>';
 
         if(isset($_POST['message']) && isset($_POST['message_button']))
         {
@@ -53,47 +58,56 @@
     <form method="GET">
         <input type="submit" name="back" value="<< BACK">
     </form>
-    <h1>
+    <h3>
         <?php
             echo 'ORDER_ID: '.$_SESSION['order_id'];
         ?>
-    </h1>
+    </h3>
+    <?php
+        echo '<div id="get_order_id">'.$_SESSION['order_id'].'</div><div id="get_user_id">'.$_SESSION['user_id'].'</div>';
+    ?>
     <div id="messages">
         <?php
-        foreach($customer_mesages as $key => $value)
+        if($customer_messages)
         {
-            $sql_select = "SELECT * FROM users WHERE user_id=:user_id";
-	        $stmt = $pdo->prepare($sql_select);
-            $stmt->execute(array(
-                                 ':user_id'=>$value['user_id']
-                                ));
-	        $user_info = $stmt->fetch(PDO::FETCH_ASSOC);
-            echo '<div class="user_type_'.$user_info['user_type'].'">'.$value['message'].'</div><br>';
+            foreach($customer_messages as $key => $value)
+            {
+                $sql_select = "SELECT * FROM users WHERE user_id=:user_id";
+	            $stmt = $pdo->prepare($sql_select);
+                $stmt->execute(array(
+                                     ':user_id'=>$value['user_id']
+                                    ));
+	            $user_info = $stmt->fetch(PDO::FETCH_ASSOC);
+                echo '<div class="user_type_'.$user_info['user_type'].'">'.$value['message'].'</div>';
+            }
         }
         ?>
     </div>
     <form method="POST">
-        <input type="text" name="message">
+        <input type="text" name="message" required>
         <input type="submit" name="message_button" value="Send">
     </form>
     <style>
         .user_type_0 {
             text-align: right;
-            background-color: #56F;
+            background-color: #F61;
             color: #fff;
-            padding: 10px;
-            border-radius: 10px;
+            padding: 2px;
+            margin-top: 2px;
+            margin-bottom: 2px;
         }
         .user_type_1 {
             text-align: left;
-            background-color: #56F;
+            background-color: #F6F;
             color: #fff;
-            padding: 10px;
-            border-radius: 10px;
+            padding: 2PX;
+            margin-top: 2px;
+            margin-bottom: 2px;
         }
         #messages {
             width: 300px;
         }
     </style>
+    <script src="js_scripts/customer_messages_script.js"></script>
 </body>
 </html>

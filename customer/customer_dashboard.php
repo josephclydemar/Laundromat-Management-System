@@ -118,11 +118,11 @@
     
     <header class="header">
         <div class="logo">
-            Wash Matic
+            <h4>Wash Matic</h4>
         </div>
 
         <div class="dashboard">
-            DASHBOARD
+            <h5>CUSTOMER SIDE</h5>
         </div>
 
         <div class="user">

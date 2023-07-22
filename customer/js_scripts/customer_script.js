@@ -101,8 +101,6 @@ for(let i=0; i<my_orders.length; i++)
     };
 }
 
-
-
 setInterval(function() {
     for(let i=0; i<my_orders.length; i++)
     {
@@ -111,6 +109,20 @@ setInterval(function() {
         xhr[i].send(`remaining_time${my_orders[i].id}=goo`);
     }
 }, 500);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
