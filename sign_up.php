@@ -1,8 +1,8 @@
 <?php
     session_start();
     
-    include_once "database_connection.php";
-    include_once "customer.php";
+    include_once "classes/database_connection.php";
+    include_once "customer/customer.php";
 
     function verifyEmailAlreadyExists($entered_email)
     {
@@ -36,7 +36,7 @@
             $user_id = $new_customer->getuserId();
             // echo $new_customer->getuserId();
             $_SESSION['user_id'] = $user_id;
-            header('Location: customer_dashboard.php');
+            header('Location: customer/customer_dashboard.php');
             return;
         }
     }

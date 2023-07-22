@@ -88,9 +88,13 @@
         <input type="submit" name="message_button" value="Send">
     </form>
     <style>
+        #messages {
+            overflow-y: scroll;
+            height: 250px;
+        }
         .user_type_0 {
             text-align: right;
-            background-color: #F61;
+            background-color: #018;
             color: #fff;
             padding: 2px;
             margin-top: 2px;
@@ -98,7 +102,7 @@
         }
         .user_type_1 {
             text-align: left;
-            background-color: #F6F;
+            background-color: #081;
             color: #fff;
             padding: 2PX;
             margin-top: 2px;

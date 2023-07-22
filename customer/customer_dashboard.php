@@ -264,7 +264,7 @@
                                     echo '<td>'.$all_services_info[$record['service_id']-1]['service_name'].'</td>';
                                     echo '<td>'.$payment_info['payment_amount'].'</td>';
                                     echo '<td>'.$order_status_words[$record['order_status']].'</td>';
-                                    echo '<td><form method="POST"><input type="hidden" name="order_id" value="'.$record['order_id'].'"><input type="hidden" name="user_id" value="'.$record['user_id'].'"><input type="submit" name="feedback" value="Comment"></form></td>';
+                                    echo '<td><form method="POST"><input type="hidden" name="order_id" value="'.$record['order_id'].'"><input type="hidden" name="user_id" value="'.$record['user_id'].'"><input class="feedback_button" type="submit" name="feedback" value="Comment"></form></td>';
                                     echo '</tr>';
                                     
                                 }
@@ -282,6 +282,18 @@
     
     <style>
         /* CSS styles go here */
+        .feedback_button {
+            background-color: #fff;
+            color: #222;
+            border: 1px solid #000;
+            margin: 1px;
+            padding: 3px;
+        }
+        .feedback_button:hover {
+            background-color: #222;
+            color: #fff;
+        }
+        
         .order{
             flex: 1;
         }

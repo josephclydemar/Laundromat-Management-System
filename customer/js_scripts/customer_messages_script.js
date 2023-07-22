@@ -16,6 +16,13 @@ console.log(individual_messages.length)
 // }
 console.log('\n\n\n');
 
+if(individual_messages.length > 0)
+{
+    let new_message_added_first = document.getElementById('messages').children;
+    new_message_added_first[new_message_added_first.length - 1].scrollIntoView();
+}
+
+
 let previos_data = null;
 
 const feedback_xhr = new XMLHttpRequest();
@@ -37,6 +44,8 @@ feedback_xhr.onload = function()
         // new_message.style = 'text-align: left;background-color: #F6F;color: #fff; padding: 2px;';
         messages_div.appendChild(new_message);
         previos_data = response_data;
+        let new_message_added = document.getElementById('messages').children;
+        new_message_added[new_message_added.length - 1].scrollIntoView();
     }
 };
 
