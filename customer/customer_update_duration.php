@@ -1,5 +1,5 @@
 <?php
-    include_once 'database_connection.php';
+    include_once "../classes/database_connection.php";
 
     $db_conn = new DatabaseConnection();
     $pdo = $db_conn->getPDO();

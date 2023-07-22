@@ -106,7 +106,7 @@ for(let i=0; i<my_orders.length; i++)
 setInterval(function() {
     for(let i=0; i<my_orders.length; i++)
     {
-        xhr[i].open('POST', 'update_duration.php');
+        xhr[i].open('POST', 'customer_update_duration.php');
         xhr[i].setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
         xhr[i].send(`remaining_time${my_orders[i].id}=goo`);
     }

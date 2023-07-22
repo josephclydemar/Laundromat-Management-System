@@ -1,6 +1,6 @@
 <?php
     session_start();
-    include_once "database_connection.php";
+    include_once "classes/database_connection.php";
 
     function verifyUser($entered_email, $entered_password)
     {
@@ -51,12 +51,12 @@
 
             if($select_query_result['user_type'] == 0)
             {
-                header('Location: customer_dashboard.php');
+                header('Location: customer/customer_dashboard.php');
                 return;
             }
             else
             {
-                header('Location: admin_dashboard.php');
+                header('Location: admin/admin_dashboard.php');
                 return;
             }
         }

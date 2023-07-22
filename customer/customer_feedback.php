@@ -1,6 +1,6 @@
 <?php
     session_start();
-    include_once "database_connection.php";
+    include_once "../classes/database_connection.php";
     include_once "customer.php";
     // include_once "message.php";
 

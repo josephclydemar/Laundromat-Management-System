@@ -1,6 +1,6 @@
 <?php
     session_start();
-    include_once "database_connection.php";
+    include_once "../classes/database_connection.php";
     include_once "customer.php";
 
     $db_conn = new DatabaseConnection();
@@ -12,7 +12,7 @@
     if(isset($_GET['logout']))
     {
         session_destroy();
-		header("Location: index.php");
+		header("Location: ../index.php");
 		return;
     }
 
@@ -31,7 +31,7 @@
 
         if($user_info['user_type'] == 1)
         {
-            header('Location: admin_dashboard.php');
+            header('Location: ../admin/admin_dashboard.php');
             return;
         }
 
@@ -41,24 +41,29 @@
         if( isset($_POST['service_type']) && isset($_POST['weight']) && isset($_POST['order_price']) && isset($_POST['order_duration']) )
         {
             $time_today_SAYUP = date('d-m-Y H:i:s');
+
             // $time_remaining = ((int)$_POST['order_duration']) * 3600;
-            $time_remaining = ((int)$_POST['order_duration']);
+            $time_remaining = ((int)$_POST['order_duration']) * 60;
+            // $time_remaining = ((int)$_POST['order_duration']);
+
             $order_status = 3;
             $time_offset = (int)$_POST['order_duration'];
 
             $date_and_time_split = explode(' ', $time_today_SAYUP);
             $hour_minute_second_split = explode(':', $date_and_time_split[1]);
-            $hour_ordered = (int)$hour_minute_second_split[0];
 
             $date_split_for_database_format = explode('-', $date_and_time_split[0]);
             $time_today = $date_split_for_database_format[2].'-'.$date_split_for_database_format[1].'-'.$date_split_for_database_format[0].' '.$date_and_time_split[1];
 
             // $date_day_split_for_database_format = (int)$date_split_for_database_format[0];
-            // $time_duration = $hour_ordered + $time_offset;
-            $time_duration = ((int)$hour_minute_second_split[2]) + $time_offset;
+            // $time_duration = ((int)$hour_minute_second_split[0]) + $time_offset;
+            $time_duration = ((int)$hour_minute_second_split[1]) + $time_offset;
+            // $time_duration = ((int)$hour_minute_second_split[2]) + $time_offset;
    
             // $date_finish = $date_split_for_database_format[2].'-'.$date_split_for_database_format[1].'-'.($date_split_for_database_format[0]).' '.$time_duration.':'.$hour_minute_second_split[1].':'.$hour_minute_second_split[2];
-            $date_finish = $date_split_for_database_format[2].'-'.$date_split_for_database_format[1].'-'.($date_split_for_database_format[0]).' '.$hour_ordered.':'.$hour_minute_second_split[1].':'.$time_duration;
+            $date_finish = $date_split_for_database_format[2].'-'.$date_split_for_database_format[1].'-'.($date_split_for_database_format[0]).' '.$hour_minute_second_split[0].':'.$time_duration.':'.$hour_minute_second_split[2];
+            // $date_finish = $date_split_for_database_format[2].'-'.$date_split_for_database_format[1].'-'.($date_split_for_database_format[0]).' '.$hour_minute_second_split[0].':'.$hour_minute_second_split[1].':'.$time_duration;
+            
             $customer->createOrder($_POST['service_type'], $time_today, $date_finish, $time_remaining, $order_status, $_POST['weight'], 'Hoy HEHE', $_POST['order_price']);
             header('Location: customer_dashboard.php');
             return;
@@ -92,7 +97,7 @@
         }
     }
     else {
-        header('Location: index.php');
+        header('Location: ../index.php');
         return;
     }
 ?>
@@ -235,7 +240,7 @@
                     <div class="my-order-body">
                         <table>
                             <tr>
-                                <th>Order Number</th>
+                                <th>Order ID</th>
                                 <th>Date</th>
                                 <th>Remaining Time</th>
                                 <th>Type of Service</th>
@@ -558,7 +563,7 @@
             padding: 2px;
         }
     </style>
-    <script src="js_scripts/script.js"></script>
+    <script src="js_scripts/customer_script.js"></script>
 </body>
 </html>
     

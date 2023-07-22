@@ -1,9 +1,7 @@
 <?php
-    include_once "order.php";
-    include_once "message.php";
-    include_once "database_connection.php";
+    include_once "../classes/database_connection.php";
 
-    class Customer
+    class Admin
     {
         private $user_id;
         private $firstname;
@@ -47,7 +45,6 @@
 
         public function createUser()
         {
-            $total_orders = 0;
             $insert_new_user = "INSERT INTO users (firstname, lastname, user_address, total_orders, email, user_password) VALUES (:firstname, :lastname, :user_address, :total_orders, :email, :user_password)";
             $stmt = $this->pdo->prepare($insert_new_user);
             $stmt->execute(array(':firstname'=>$this->firstname,
@@ -59,11 +56,6 @@
                                 ));
         }
 
-        public function getUserId()
-        {
-            return $this->user_id;
-        }
-
         public function getMyInfo()
         {
             $sql_select = "SELECT * FROM users WHERE user_id=:user_id";
@@ -73,47 +65,35 @@
             return $user_query_result;
         }
 
-        public function createOrder($service_type, $date_ordered, $date_finish, $remaining_time, $order_status, $order_weight, $order_description, $order_price)
+        public function getMyCustomers()
         {
-            new Order($this->getUserId(), $service_type, $date_ordered, $date_finish, $remaining_time, $order_status, $order_weight, $order_description, $order_price);
+            $select_all_customers = "SELECT * FROM users WHERE user_type=:user_type";
+            $stmt = $this->pdo->prepare($select_all_customers);
+            $stmt->execute(array(':user_type'=>0));
+            $select_customers_result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $select_customers_result;
         }
 
-        public function getMyOrders($order_status)
+        public function getCustomerOrders($customer_id)
         {
-            // get all user orders
-            $sql_select = "SELECT * FROM orders WHERE user_id=:user_id AND NOT order_status=:order_status";
-	        $stmt = $this->pdo->prepare($sql_select);
-            $stmt->execute(array(
-                                 ':user_id'=>$this->user_id,
-                                 ':order_status'=>$order_status
-                                ));
-	        $select_orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            // var_dump($select_query_result_orders);
-            // echo $select_query_result_orders;
-            return $select_orders;
+            $select_all_customers = "SELECT * FROM orders WHERE user_id=:user_id";
+            $stmt = $this->pdo->prepare($select_all_customers);
+            $stmt->execute(array(':user_id'=>$customer_id));
+            $select_customers_result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $select_customers_result;
         }
 
-        public function createMessage($order_id, $message_date, $message)
+        public function getCustomerOrderMessages($order_id)
         {
-            $insert_new_message = "INSERT INTO messages (user_id, order_id, message_date, message) VALUES (:user_id, :order_id, :message_date, :message)";
-            $stmt = $this->pdo->prepare($insert_new_message);
+
+            $select_all_customer_orders = "SELECT * FROM messages WHERE order_id=:order_id AND NOT user_id=:user_id";
+            $stmt = $this->pdo->prepare($select_all_customer_orders);
             $stmt->execute(array(
-                                 ':user_id'=>$this->user_id,
                                  ':order_id'=>$order_id,
-                                 ':message_date'=>$message_date,
-                                 ':message'=>$message
+                                 ':user_id'=>$this->user_id
                                 ));
-        }
-
-        public function getMyMessageThread($order_id)
-        {
-            $select_message = "SELECT * FROM messages WHERE order_id=:order_id";
-            $stmt = $this->pdo->prepare($select_message);
-            $stmt->execute(array(
-                                 ':order_id'=>$order_id
-                                ));
-            $select_messages = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            return $select_messages;
+            $select_customer_orders_result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $select_customer_orders_result;
         }
     }
 ?>

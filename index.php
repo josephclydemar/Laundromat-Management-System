@@ -1,7 +1,7 @@
 <?php
     session_start();
     if(isset($_SESSION['user_id'])) {
-        header("Location: customer_dashboard.php");
+        header("Location: customer/customer_dashboard.php");
         return;
     }
 ?>
