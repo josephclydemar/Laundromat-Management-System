@@ -46,7 +46,7 @@
             $time_remaining = ((int)$_POST['order_duration']) * 60;
             // $time_remaining = ((int)$_POST['order_duration']);
 
-            $order_status = 3;
+            $order_status = 2; // Set Order Status to In-progress
             $time_offset = (int)$_POST['order_duration'];
 
             $date_and_time_split = explode(' ', $time_today_SAYUP);
