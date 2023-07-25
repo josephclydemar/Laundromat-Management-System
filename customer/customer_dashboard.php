@@ -137,7 +137,7 @@
         <div class="side-bar">
             <span>Main Menu</span>
             <a href="#">Dashboard</a>
-            <a href="#">History</a>
+            <a href="../history.php">History</a>
             <form method="GET">
                 <input type="submit" name="logout" value="Log-out">
             </form>
@@ -152,14 +152,14 @@
                             <form method="POST">
                                 <!-- Form content goes here -->
                                 <select name="service_type" id="services" onchange="getOrderWeightValue()" required>
-                                    
+                                    <option value="" disabled selected hidden>Select service</option>
                                     <option value="1" selected>Press only</option> 
                                     <option value="2">Wash-Dry-Fold</option>
                                     <option value="3">Wash-Dry-Press</option>
                                 </select><br>
                                 <input type="number" name="weight" id="weight" min="1" max="20" autocomplete="off" placeholder="Input weight" value="1" required> <br>
-                                Duration:<label id="order_duration_label"></label>hr<br>
-                                ₱<label id="order_price_label">0</label>
+                                Duration:<label id="order_duration_label"></label>hr
+                                ₱<label id="order_price_label">0</label><br>
                                 <input type="hidden" id="order_price" name="order_price" value="">
                                 <input type="hidden" id="order_duration" name="order_duration" value="">
                                 <button type="submit" name="btn">Submit</button>
@@ -169,7 +169,7 @@
 
                 <div class="list">
                     <div class="card1">
-                        <div class="card1-body"></div>
+                        <div class="card1-body">
                                 <table>
                                     <tr>
                                         <th>Order Number</th>
@@ -186,10 +186,11 @@
                                     }
                                     ?>
                                 </table>
+                                </div>
                             
                       </div>
                       <div class="card2">
-                        <div class="card2-body"></div>
+                        <div class="card2-body">
                         <table>
                             <tr>
                                 <th>Order Number</th>
@@ -206,9 +207,10 @@
                                 }
                             ?>
                         </table>
+                        </div>
                       </div>
                       <div class="card3">
-                        <div class="card3-body"></div>
+                        <div class="card3-body">
                         <table>
                             <tr>
                                 <th>Order Number</th>
@@ -225,6 +227,7 @@
                                 }
                             ?>
                         </table>
+                        </div>
                       </div>
                 </div>
             </div>
@@ -282,18 +285,6 @@
     
     <style>
         /* CSS styles go here */
-        .feedback_button {
-            background-color: #fff;
-            color: #222;
-            border: 1px solid #000;
-            margin: 1px;
-            padding: 3px;
-        }
-        .feedback_button:hover {
-            background-color: #222;
-            color: #fff;
-        }
-        
         .order{
             flex: 1;
         }
@@ -302,278 +293,287 @@
             display: flex;
             
         }
-        @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
-            *{
-                margin: 0;
-                padding: 0;
-                border: none;
-                outline: none;
-                text-decoration: none;
-                box-sizing: border-box;
-                font-family: "Poppins", sans-serif;
-            }
-    
-    
-        body{
-                /* background: rgb(219, 219, 219); */
-                background: rgb(245,245,245);
-                
-            }
-    
-        .header{
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                height: 60px;
-                /* padding: 20px; */
-                /* padding-right: 20px; */
-                background: #fff;
-                flex-direction: row;
-            }
-        .logo{
-                width: 13%;
-                height: 60px;
-                background-color: #43A6ED;
-                text-align: center;
-                padding: 15px;
-                font-size: 22px;
-                
+        /* @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"); */
+        *{
+            margin: 0;
+            padding: 0;
+            border: none;
+            outline: none;
+            text-decoration: none;
+            box-sizing: border-box;
+            font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
         }
-        
-        .user{
-                width: 15%;
-                height: 60px;
-                background-color: #43A6ED;
-                padding-left: 30px;
-                padding-top: 15px;
-                font-size: 17px;
-        }
-    
-        .dashboard{
-            width: auto;
-            font-size: 25px;
-    
-        }
-    
-        .container{
-        margin-top: 10px;
-        display: flex;
-        height: 92.5vh;
-        justify-content: space-between;
-    
-        
-        
-         }
-        .side-bar{
-            padding: 1px;
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-            width: 15%;
-        }
-        
-        .side-bar span{
-            color: black;
-            margin: 1.8rem 3rem;
-            font-size: 12px;
-        }
-    
-        .side-bar a{
-            width: 100%;
-            padding: 1.8rem 3rem;
-            font-weight: 500;
-            font-size: 18px;
-            color: black;        
-        }
-        .side-bar form {
-            width: 100%;
-            padding: 1.8rem 3rem;
-            font-weight: 500;
-            font-size: 18px;
-            color: black;
-        
-        }
-    
-        .side-bar a:hover{
-            background: #43A6ED;
-            color: white;
-            border-radius: 20px;
-        
-        }
-        .side-bar form input:hover{
-            background: #43A6ED;
-            color: white;
-            border-radius: 20px;
-        
-        }
-        .main-container{
-            display: flex;
-            padding: 10px;
-            height: 100%;
-            width: 100%;
-            flex-direction: column;
-        }
-    
-        .first-container .list{
-            display: flex;
-            align-items: flex-start;
-            width: 70%;
-            height: 100%;
-            flex-direction: row;
-            /* gap: 10px; */
-            justify-content: space-between;
-            border: 0.5px solid black;
-            padding: 5px;
-            background: #fff;
-            /* background-color: #43A6ED; */
-            /* background-color: #4351ed; */
-        }
-        .first-container .list .card1{
-            width: 30%;
-            height: 100%;
-            /* border: 0.5px solid black; */
-            overflow: auto;
-        }
-        
-        
-        
-        .first-container .list .card1 table{
-            width: 100%;
-            height: 100%;
-            /* color: white; */
-            /* border: 0.5px solid black; */
-        }
-    
-        .first-container .list .card1 table, th, td{
-            border: 1px solid;
-            border-collapse: collapse;
-            border-color: black;
-            text-align: center;
-            padding: 2px;
-        }
-        .first-container .list .card2{
-            width: 30%;
-            height: 100%;
-            /* border: 0.5px solid black; */
-            overflow: auto;
-        }
-        .first-container .list .card2 table, th, td{
-            border: 1px solid;
-            border-collapse: collapse;
-            border-color: black;
-            text-align: center;
-            padding: 2px;
-        }
-        .first-container .list .card3{
-            width: 30%;
-            height: 100%;
-            /* border: 0.5px solid black; */
-            overflow: auto;
-        }
-        .first-container .list .card3 table, th, td{
-            border: 1px solid;
-            border-collapse: collapse;
-            border-color: black;
-            text-align: center;
-            padding: 2px;
-        }
-    
-    
-        .second-container{
-            width: 100%;
-            height: 70%;
-        }
-        
-    
-    
-        
-        
-    
-        .first-container .order{
-            width: auto;
-            align-items: center;
-            text-align: center;
-        }
-    
-        .first-container{
-            flex-direction: row;
-            justify-content: space-between;
-            height: 30%;
-            width: 100%;
-            display: flex;
-        }
-    
-        .first-container .order .place-order-inner{
-            text-align: center;
-        }
-    
-        .first-container .order .place-order-body{
-            text-align: center;
-            align-items: center;
-        }
-        .first-container .order .place-order .place-order-body{
-            padding-top: 5px;
-            align-items: center;
-            text-align: center;
-        }
-        select{
-            height: 30px;
-            font-size: 17px;
-            margin: 10px;
-        }
-        input{
-            height: 30px;
-            font-size: 17px;
-            margin: 5px;
-        }
-    
-        label{
-            height: 30px;
-            font-size: 17px;
-            margin: 10px;
-        }
-        button{
-            height: 30px;
-            width: 20%;
-            font-size: 15px;
-            background-color: #43A6ED;
-            margin: 5px;
-            border: 0;
-            border-radius: 5px;
-        }
-    
-        .second-container .my-order-body table{
-            width: 100%;
-        }
-    
-        .second-container .my-order-body{
-            width: 100%;
-            padding: 20px;
-            height: 60%;
-            overflow: auto;
-            border: 0.5px solid black;
-        }
-    
-        .second-container .my-order-inner{
-            padding-left: 80px;
-            padding-top: 50px;
-            padding-bottom: 15px;
-           
-        }
-    
-        .second-container .my-order-inner h3{
-            padding-left: 40px;
+
+
+    body{
+            /* background: rgb(219, 219, 219); */
+            background: rgb(204,204,204);
             
-           
         }
-    
-        .second-container .my-order-body table, th, td{
-            border: 1px solid;
-            border-collapse: collapse;
-            border-color: black;
+
+    .header{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 60px;
+            /* padding: 20px; */
+            /* padding-right: 20px; */
+            background: #fff;
+            flex-direction: row;
+            width: 100%;
+        }
+    .logo{
+            width: 15%;
+            height: 60px;
+            background-color: #43A6ED;
             text-align: center;
-            padding: 2px;
-        }
+            padding: 15px;
+            font-size: 22px;
+            
+    }
+    
+    .user{
+            width: 15%;
+            height: 60px;
+            background-color: #43A6ED;
+            padding-left: 30px;
+            padding-top: 15px;
+            font-size: 17px;
+            text-align: center;
+    }
+
+    .dashboard{
+        width: auto;
+        font-size: 25px;
+
+    }
+
+    .container{
+    margin-top: 10px;
+    display: flex;
+    height: 92.5vh;
+    justify-content: space-between;
+
+    
+    
+}
+.side-bar{
+        padding: 1px;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        width: 15%;
+        background: #43A6ED;
+    }
+    
+    .side-bar span{
+        color: black;
+        margin: 1.8rem 3rem;
+        font-size: 12px;
+    }
+
+    .side-bar a{
+        width: 100%;
+        padding: 1.8rem 3rem;
+        font-weight: 500;
+        font-size: 18px;
+        color: black;        
+    }
+
+    .side-bar input{
+        width: 98%;
+        padding: 1.8rem 3rem;
+        font-weight: 500;
+        font-size: 18px;
+        color: black;        
+        background: #43A6ED;
+    }
+
+    .side-bar a:hover{
+        background: #fff;
+        color: #43A6ED;
+        border-radius: 20px;
+    
+    }
+
+    .side-bar input:hover{
+        background: #fff;
+        color: #43A6ED;
+        border-radius: 20px;
+    
+    }
+
+    .main-container{
+        display: flex;
+        padding: 10px;
+        height: 100%;
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .first-container .list{
+        display: flex;
+        align-items: flex-start;
+        width: 70%;
+        height: 100%;
+        flex-direction: row;
+        /* gap: 10px; */
+        justify-content: space-between;
+        border: 0.5px solid black;
+        padding: 5px;
+        background: #fff;
+        border-radius: 10px;
+        /* background-color: #43A6ED; */
+        /* background-color: #4351ed; */
+    }
+    .first-container .list .card1{
+        width: 30%;
+        height: 100%;
+        /* border: 0.5px solid black; */
+        overflow: auto;
+    }
+    
+    
+    
+    .first-container .list .card1 table{
+        width: 100%;
+        height: 100%;
+        /* color: white; */
+        /* border: 0.5px solid black; */
+    }
+
+    .first-container .list .card1 table, th, td{
+        border: 1px solid;
+        border-collapse: collapse;
+        border-color: black;
+        text-align: center;
+        padding: 2px;
+    }
+    .first-container .list .card2{
+        width: 30%;
+        height: 100%;
+        /* border: 0.5px solid black; */
+        overflow: auto;
+    }
+    .first-container .list .card2 table, th, td{
+        border: 1px solid;
+        border-collapse: collapse;
+        border-color: black;
+        text-align: center;
+        padding: 2px;
+    }
+    .first-container .list .card3{
+        width: 30%;
+        height: 100%;
+        /* border: 0.5px solid black; */
+        overflow: auto;
+    }
+    .first-container .list .card3 table, th, td{
+        border: 1px solid;
+        border-collapse: collapse;
+        border-color: black;
+        text-align: center;
+        padding: 2px;
+    }
+
+
+    .second-container{
+        width: 100%;
+        height: 70%;
+    }
+    
+
+
+    
+    
+
+    .first-container .order{
+        width: auto;
+        align-items: center;
+        text-align: center;
+    }
+
+    .first-container{
+        flex-direction: row;
+        justify-content: space-between;
+        height: 30%;
+        width: 100%;
+        display: flex;
+    }
+
+    .first-container .order .place-order-inner{
+        text-align: center;
+    }
+
+    .first-container .order .place-order-body{
+        text-align: center;
+        align-items: center;
+    }
+    .first-container .order .place-order .place-order-body{
+        padding-top: 5px;
+        align-items: center;
+        text-align: center;
+    }
+    select{
+        height: 30px;
+        font-size: 17px;
+        margin: 10px;
+    }
+    input{
+        height: 30px;
+        font-size: 17px;
+        margin: 5px;
+    }
+
+    label{
+        height: 30px;
+        font-size: 17px;
+        margin: 10px;
+    }
+    button{
+        height: 30px;
+        width: 20%;
+        font-size: 15px;
+        background-color: #43A6ED;
+        margin: 5px;
+        border: 0;
+        border-radius: 5px;
+    }
+
+    .second-container .my-order-body table{
+        width: 100%;
+    }
+
+    .second-container .my-order-body{
+        width: 100%;
+        padding: 20px;
+        height: 60%;
+        overflow: auto;
+        border: 0.5px solid black;
+        background: #fff;
+        border-radius: 20px;
+    }
+
+    .second-container .my-order-inner{
+        padding-left: 80px;
+        padding-top: 50px;
+        padding-bottom: 15px;
+       
+    }
+
+    .second-container .my-order-inner h3{
+        padding-left: 40px;
+        
+       
+    }
+
+    .second-container .my-order-body table, th, td{
+        border: 1px solid;
+        border-collapse: collapse;
+        border-color: black;
+        text-align: center;
+        padding: 2px;
+    }
     </style>
     <script src="js_scripts/customer_script.js"></script>
 </body>
