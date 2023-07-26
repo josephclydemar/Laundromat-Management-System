@@ -55,7 +55,7 @@ CREATE TABLE payments (payment_id INT NOT NULL AUTO_INCREMENT, order_id INT NOT 
 
 **Create the `messages` table:**
 ```sql
-CREATE TABLE messages (message_id INT NOT NULL AUTO_INCREMENT, user_id INT NOT NULL, order_id INT NOT NULL, message_date DATETIME NOT NULL, message TEXT, PRIMARY KEY (message_id));
+CREATE TABLE messages (message_id INT NOT NULL AUTO_INCREMENT, user_id INT NOT NULL, order_id INT NOT NULL, message_date DATETIME NOT NULL, message TEXT, been_read INT UNSIGNED NOT NULL, PRIMARY KEY (message_id));
 ```
 
 <br>
