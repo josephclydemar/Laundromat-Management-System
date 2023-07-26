@@ -41,7 +41,7 @@ CREATE TABLE services (service_id INT NOT NULL AUTO_INCREMENT, service_name VARC
 
 **Create the `orders` table:**
 ```sql
-CREATE TABLE orders (order_id INT NOT NULL AUTO_INCREMENT, user_id INT NOT NULL, service_id INT NOT NULL, date_ordered DATETIME NOT NULL, date_finish DATETIME NOT NULL, remaining_time INT NOT NULL, order_status INT NOT NULL, order_weight DOUBLE NOT NULL, order_description TEXT, PRIMARY KEY (order_id));
+CREATE TABLE orders (order_id INT NOT NULL AUTO_INCREMENT, user_id INT NOT NULL, service_id INT NOT NULL, date_ordered DATETIME NOT NULL, date_finish DATETIME NOT NULL, remaining_time INT UNSIGNED NOT NULL, order_status INT NOT NULL, order_weight DOUBLE NOT NULL, order_description TEXT, PRIMARY KEY (order_id));
 ```
 
 <br>
