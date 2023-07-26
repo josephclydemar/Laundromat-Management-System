@@ -14,6 +14,11 @@
             header('Location: admin_view_customer_orders.php');
             return;
         }
+        if(isset($_POST['back_dash']))
+        {
+            header('Location: admin_dashboard.php');
+            return;
+        }
 
 
         $sql_select = "SELECT * FROM users WHERE user_id=:user_id";
@@ -54,6 +59,9 @@
 <body>
     <form method="POST">
         <input type="submit" name="back" value="<< BACK">
+    </form>
+    <form method="POST">
+        <input type="submit" name="back_dash" value="<< BACK DASHBOARD">
     </form>
     <?php
         echo '<div id="get_order_id">'.$_SESSION['order_id'].'</div><div id="get_user_id">'.$_SESSION['admin_id'].'</div>';

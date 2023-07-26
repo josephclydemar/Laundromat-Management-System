@@ -14,7 +14,7 @@
             // echo $split_key[2];
             $sql_select_orders = "SELECT * FROM orders WHERE order_id=:order_id";
 	        $stmt = $pdo->prepare($sql_select_orders);
-            $stmt->execute(array(':order_id'=>$split_key[2]));
+            $stmt->execute(array(':order_id'=>$split_key[1]));
 	        $record = $stmt->fetch(PDO::FETCH_ASSOC);
     
             $time_today_for_strtotime = date('d-m-Y H:i:s');

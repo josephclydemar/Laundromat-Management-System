@@ -7,6 +7,12 @@
     $pdo = $db_conn->getPDO();
     // echo $_SESSION['user_id'];
     // echo 'SA GAWAS!!!!';
+    $sql_admin_select = "SELECT * FROM users WHERE user_type=:user_type";
+	$stmt = $pdo->prepare($sql_admin_select);
+    $stmt->execute(array(
+                         ':user_type'=>1
+                        ));
+	$admin_info = $stmt->fetch(PDO::FETCH_ASSOC);
 
     $order_status_words = array(1=>'Complete', 2=>'In-Progress', 3=>'Pending');
     if(isset($_GET['logout']))
@@ -149,7 +155,7 @@
                             <h3>PLACE ORDER</h2>
                         </div>
                         <div class="place-order-body">
-                            <form method="POST">
+                            <form action="customer_dashboard.php" method="POST">
                                 <!-- Form content goes here -->
                                 <select name="service_type" id="services" onchange="getOrderWeightValue()" required>
                                     <option value="" disabled selected hidden>Select service</option>
@@ -157,13 +163,14 @@
                                     <option value="2">Wash-Dry-Fold</option>
                                     <option value="3">Wash-Dry-Press</option>
                                 </select><br>
-                                <input type="number" name="weight" id="weight" min="1" max="20" autocomplete="off" placeholder="Input weight" value="1" required> <br>
-                                Duration:<label id="order_duration_label"></label>hr
-                                ₱<label id="order_price_label">0</label><br>
+                                <input type="number" name="weight" id="weight" min="1" max="20" autocomplete="off" placeholder="Input weight" value="1" required>kg<br>
+                                
                                 <input type="hidden" id="order_price" name="order_price" value="">
                                 <input type="hidden" id="order_duration" name="order_duration" value="">
-                                <button type="submit" name="btn">Submit</button>
+                                <input type="submit" name="btn" value="Submit" class="place_order_button">
                             </form>
+                            <span style="font-size: 13px; font-weight: 800;">DURATION:</span><span id="order_duration_label" style="font-size:16px;font-weight:800;"></span><span style="font-size:16px;font-weight:800;">hr</span><br>
+                            <span style="font-size: 13px; font-weight: 800;">PRICE:</span><span id="order_price_label" style="font-size:16px;font-weight:800;">0</span><br>
                         </div>
                 </div>
 
@@ -234,12 +241,9 @@
             <div class="second-container">
                 
                     <div class="my-order-inner">
-                        <h3>My Orders</h4>
-                        <form>
-                            <input type="text" name="user-order" id="user-order" autocomplete="off" placeholder="SEARCH ORDER"><br>
-                            <button name="btn">Submit</button>
-                        </form>
+                        
                     </div>
+                    <h3 style="text-align: center;">My Orders</h4>
                     <div class="my-order-body">
                         <table>
                             <tr>
@@ -267,7 +271,7 @@
                                     echo '<td>'.$all_services_info[$record['service_id']-1]['service_name'].'</td>';
                                     echo '<td>'.$payment_info['payment_amount'].'</td>';
                                     echo '<td>'.$order_status_words[$record['order_status']].'</td>';
-                                    echo '<td><form method="POST"><input type="hidden" name="order_id" value="'.$record['order_id'].'"><input type="hidden" name="user_id" value="'.$record['user_id'].'"><input class="feedback_button" type="submit" name="feedback" value="Comment"></form></td>';
+                                    echo '<td><form method="POST"><input type="hidden" name="order_id" value="'.$record['order_id'].'"><input type="hidden" name="user_id" value="'.$record['user_id'].'"><input class="feedback_button" id="notification_'.$record['order_id'].'_'.$admin_info['user_id'].'" type="submit" name="feedback" value="Comment"></form></td>';
                                     echo '</tr>';
                                     
                                 }
@@ -303,277 +307,301 @@
             box-sizing: border-box;
             font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
         }
-
-
-    body{
-            /* background: rgb(219, 219, 219); */
-            background: rgb(204,204,204);
-            
+        body{
+                /* background: rgb(219, 219, 219); */
+                background: rgb(204,204,204);
+                
+            }
+        
+            .feedback_button {
+              background-color: #e1ecf4;
+              border-radius: 8px;
+              border: 1px solid #7aa7c7;
+              box-shadow: rgba(255, 255, 255, .7) 0 1px 0 0 inset;
+              box-sizing: border-box;
+              color: #39739d;
+              cursor: pointer;
+              display: inline-block;
+              font-family: -apple-system,system-ui,"Segoe UI","Liberation Sans",sans-serif;
+              font-size: 13px;
+              font-weight: 900;
+              line-height: 1.15385;
+              margin: 0;
+              outline: none;
+              padding: 8px;
+              position: relative;
+              text-align: center;
+              text-decoration: none;
+              user-select: none;
+              -webkit-user-select: none;
+              touch-action: manipulation;
+              vertical-align: baseline;
+              white-space: nowrap;
+            }
+    
+        .header{
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                height: 60px;
+                /* padding: 20px; */
+                /* padding-right: 20px; */
+                background: #fff;
+                flex-direction: row;
+                width: 100%;
+            }
+        .logo{
+                width: 15%;
+                height: 60px;
+                background-color: #43A6ED;
+                text-align: center;
+                padding: 15px;
+                font-size: 22px;
+                
         }
-
-    .header{
+        
+        .user{
+                width: 15%;
+                height: 60px;
+                background-color: #43A6ED;
+                padding-left: 30px;
+                padding-top: 15px;
+                font-size: 17px;
+                text-align: center;
+        }
+    
+        .dashboard{
+            width: auto;
+            font-size: 25px;
+    
+        }
+    
+        .container{
+        margin-top: 10px;
+        display: flex;
+        height: 92.5vh;
+        justify-content: space-between;
+        }
+        .side-bar{
+            padding: 1px;
             display: flex;
-            align-items: center;
-            justify-content: space-between;
-            height: 60px;
-            /* padding: 20px; */
-            /* padding-right: 20px; */
+            flex-direction: column;
+            height: 100%;
+            width: 15%;
+            background: #43A6ED;
+        }
+        
+        .side-bar span{
+            color: black;
+            margin: 1.8rem 3rem;
+            font-size: 12px;
+        }
+    
+        .side-bar a{
+            width: 100%;
+            padding: 1.8rem 3rem;
+            font-weight: 500;
+            font-size: 18px;
+            color: black;        
+        }
+    
+        .side-bar input{
+            width: 98%;
+            padding: 1.8rem 3rem;
+            font-weight: 500;
+            font-size: 18px;
+            color: black;        
+            background: #43A6ED;
+        }
+    
+        .side-bar a:hover{
             background: #fff;
+            color: #43A6ED;
+            border-radius: 20px;
+        
+        }
+    
+        .side-bar input:hover{
+            background: #fff;
+            color: #43A6ED;
+            border-radius: 20px;
+        
+        }
+    
+        .main-container{
+            display: flex;
+            padding: 10px;
+            height: 100%;
+            width: 100%;
+            flex-direction: column;
+        }
+    
+        .first-container .list{
+            display: flex;
+            align-items: flex-start;
+            width: 70%;
+            height: 100%;
             flex-direction: row;
+            /* gap: 10px; */
+            justify-content: space-between;
+            border: 0.5px solid black;
+            padding: 5px;
+            background: #fff;
+            border-radius: 10px;
+            /* background-color: #43A6ED; */
+            /* background-color: #4351ed; */
+        }
+        .first-container .list .card1{
+            width: 30%;
+            height: 100%;
+            /* border: 0.5px solid black; */
+            overflow: auto;
+        }
+        
+        
+        
+        .first-container .list .card1 table{
+            width: 100%;
+            height: 100%;
+            /* color: white; */
+            /* border: 0.5px solid black; */
+        }
+    
+        .first-container .list .card1 table, th, td{
+            border: 1px solid;
+            border-collapse: collapse;
+            border-color: black;
+            text-align: center;
+            padding: 2px;
+        }
+        .first-container .list .card2{
+            width: 30%;
+            height: 100%;
+            /* border: 0.5px solid black; */
+            overflow: auto;
+        }
+        .first-container .list .card2 table, th, td{
+            border: 1px solid;
+            border-collapse: collapse;
+            border-color: black;
+            text-align: center;
+            padding: 2px;
+        }
+        .first-container .list .card3{
+            width: 30%;
+            height: 100%;
+            /* border: 0.5px solid black; */
+            overflow: auto;
+        }
+        .first-container .list .card3 table, th, td{
+            border: 1px solid;
+            border-collapse: collapse;
+            border-color: black;
+            text-align: center;
+            padding: 2px;
+        }
+    
+    
+        .second-container{
+            width: 100%;
+            height: 70%;
+        }
+        
+    
+    
+        
+        
+    
+        .first-container .order{
+            width: auto;
+            align-items: center;
+            text-align: center;
+        }
+    
+        .first-container{
+            flex-direction: row;
+            justify-content: space-between;
+            height: 30%;
+            width: 100%;
+            display: flex;
+        }
+    
+        .first-container .order .place-order-inner{
+            text-align: center;
+        }
+    
+        .first-container .order .place-order-body{
+            text-align: center;
+            align-items: center;
+        }
+        .first-container .order .place-order .place-order-body{
+            padding-top: 5px;
+            align-items: center;
+            text-align: center;
+        }
+        select{
+            height: 30px;
+            font-size: 17px;
+            margin: 10px;
+        }
+        input{
+            height: 30px;
+            font-size: 17px;
+            margin: 5px;
+        }
+    
+        label{
+            height: 30px;
+            font-size: 17px;
+            margin: 10px;
+        }
+        .place_order_button {
+            height: 30px;
+            width: 20%;
+            font-size: 15px;
+            background-color: #43A6ED;
+            margin: 5px;
+            border: 0;
+            border-radius: 5px;
+        }
+        .place_order_button:hover {
+            border: #000 solid 1px;
+        }
+    
+        .second-container .my-order-body table{
             width: 100%;
         }
-    .logo{
-            width: 15%;
-            height: 60px;
-            background-color: #43A6ED;
-            text-align: center;
-            padding: 15px;
-            font-size: 22px;
+    
+        .second-container .my-order-body{
+            width: 100%;
+            padding: 20px;
+            height: 60%;
+            overflow: auto;
+            border: 0.5px solid black;
+            background: #fff;
+            border-radius: 20px;
+        }
+    
+        .second-container .my-order-inner{
+            padding-left: 80px;
+            padding-top: 50px;
+            padding-bottom: 15px;
+           
+        }
+    
+        .second-container .my-order-inner h3{
+            padding-left: 40px;
             
-    }
+           
+        }
     
-    .user{
-            width: 15%;
-            height: 60px;
-            background-color: #43A6ED;
-            padding-left: 30px;
-            padding-top: 15px;
-            font-size: 17px;
+        .second-container .my-order-body table, th, td{
+            border: 1px solid;
+            border-collapse: collapse;
+            border-color: black;
             text-align: center;
-    }
-
-    .dashboard{
-        width: auto;
-        font-size: 25px;
-
-    }
-
-    .container{
-    margin-top: 10px;
-    display: flex;
-    height: 92.5vh;
-    justify-content: space-between;
-
-    
-    
-}
-.side-bar{
-        padding: 1px;
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-        width: 15%;
-        background: #43A6ED;
-    }
-    
-    .side-bar span{
-        color: black;
-        margin: 1.8rem 3rem;
-        font-size: 12px;
-    }
-
-    .side-bar a{
-        width: 100%;
-        padding: 1.8rem 3rem;
-        font-weight: 500;
-        font-size: 18px;
-        color: black;        
-    }
-
-    .side-bar input{
-        width: 98%;
-        padding: 1.8rem 3rem;
-        font-weight: 500;
-        font-size: 18px;
-        color: black;        
-        background: #43A6ED;
-    }
-
-    .side-bar a:hover{
-        background: #fff;
-        color: #43A6ED;
-        border-radius: 20px;
-    
-    }
-
-    .side-bar input:hover{
-        background: #fff;
-        color: #43A6ED;
-        border-radius: 20px;
-    
-    }
-
-    .main-container{
-        display: flex;
-        padding: 10px;
-        height: 100%;
-        width: 100%;
-        flex-direction: column;
-    }
-
-    .first-container .list{
-        display: flex;
-        align-items: flex-start;
-        width: 70%;
-        height: 100%;
-        flex-direction: row;
-        /* gap: 10px; */
-        justify-content: space-between;
-        border: 0.5px solid black;
-        padding: 5px;
-        background: #fff;
-        border-radius: 10px;
-        /* background-color: #43A6ED; */
-        /* background-color: #4351ed; */
-    }
-    .first-container .list .card1{
-        width: 30%;
-        height: 100%;
-        /* border: 0.5px solid black; */
-        overflow: auto;
-    }
-    
-    
-    
-    .first-container .list .card1 table{
-        width: 100%;
-        height: 100%;
-        /* color: white; */
-        /* border: 0.5px solid black; */
-    }
-
-    .first-container .list .card1 table, th, td{
-        border: 1px solid;
-        border-collapse: collapse;
-        border-color: black;
-        text-align: center;
-        padding: 2px;
-    }
-    .first-container .list .card2{
-        width: 30%;
-        height: 100%;
-        /* border: 0.5px solid black; */
-        overflow: auto;
-    }
-    .first-container .list .card2 table, th, td{
-        border: 1px solid;
-        border-collapse: collapse;
-        border-color: black;
-        text-align: center;
-        padding: 2px;
-    }
-    .first-container .list .card3{
-        width: 30%;
-        height: 100%;
-        /* border: 0.5px solid black; */
-        overflow: auto;
-    }
-    .first-container .list .card3 table, th, td{
-        border: 1px solid;
-        border-collapse: collapse;
-        border-color: black;
-        text-align: center;
-        padding: 2px;
-    }
-
-
-    .second-container{
-        width: 100%;
-        height: 70%;
-    }
-    
-
-
-    
-    
-
-    .first-container .order{
-        width: auto;
-        align-items: center;
-        text-align: center;
-    }
-
-    .first-container{
-        flex-direction: row;
-        justify-content: space-between;
-        height: 30%;
-        width: 100%;
-        display: flex;
-    }
-
-    .first-container .order .place-order-inner{
-        text-align: center;
-    }
-
-    .first-container .order .place-order-body{
-        text-align: center;
-        align-items: center;
-    }
-    .first-container .order .place-order .place-order-body{
-        padding-top: 5px;
-        align-items: center;
-        text-align: center;
-    }
-    select{
-        height: 30px;
-        font-size: 17px;
-        margin: 10px;
-    }
-    input{
-        height: 30px;
-        font-size: 17px;
-        margin: 5px;
-    }
-
-    label{
-        height: 30px;
-        font-size: 17px;
-        margin: 10px;
-    }
-    button{
-        height: 30px;
-        width: 20%;
-        font-size: 15px;
-        background-color: #43A6ED;
-        margin: 5px;
-        border: 0;
-        border-radius: 5px;
-    }
-
-    .second-container .my-order-body table{
-        width: 100%;
-    }
-
-    .second-container .my-order-body{
-        width: 100%;
-        padding: 20px;
-        height: 60%;
-        overflow: auto;
-        border: 0.5px solid black;
-        background: #fff;
-        border-radius: 20px;
-    }
-
-    .second-container .my-order-inner{
-        padding-left: 80px;
-        padding-top: 50px;
-        padding-bottom: 15px;
-       
-    }
-
-    .second-container .my-order-inner h3{
-        padding-left: 40px;
-        
-       
-    }
-
-    .second-container .my-order-body table, th, td{
-        border: 1px solid;
-        border-collapse: collapse;
-        border-color: black;
-        text-align: center;
-        padding: 2px;
-    }
+            padding: 2px;
+        }
     </style>
     <script src="js_scripts/customer_script.js"></script>
 </body>

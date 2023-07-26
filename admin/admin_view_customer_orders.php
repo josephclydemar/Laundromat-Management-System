@@ -10,7 +10,7 @@
     {
         if(isset($_POST['back']))
         {
-            header('Location: admin_dashboard.php');
+            header('Location: admin_all_customers.php');
             return;
         }
 
