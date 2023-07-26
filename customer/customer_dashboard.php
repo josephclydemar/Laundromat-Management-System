@@ -141,9 +141,7 @@
     </header>
     <div class="container">
         <div class="side-bar">
-            <span>Main Menu</span>
             <a href="#">Dashboard</a>
-            <a href="../history.php">History</a>
             <form method="GET">
                 <input type="submit" name="logout" value="Log-out">
             </form>
