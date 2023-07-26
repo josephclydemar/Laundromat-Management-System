@@ -32,7 +32,7 @@
 
             if(!$select_message_result)
             {
-                $this->createMessage($this->user_id, $this->order_id, $this->message_date, $this->message, );
+                $this->createMessage($this->user_id, $this->order_id, $this->message_date, $this->message);
                 $sql_select = "SELECT * FROM messages ORDER BY message_id DESC";
                 $stmt = $this->pdo->query($sql_select);
                 $last_message = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -45,12 +45,14 @@
 
         public function createMessage()
         {
-            $insert_new_message = "INSERT INTO messages (user_id, order_id, message_date, message) VALUES (:user_id, :order_id, :message_date, :message)";
+            $been_read = 0; // State of a message if it has been read or not (0 represents not read)
+            $insert_new_message = "INSERT INTO messages (user_id, order_id, message_date, message) VALUES (:user_id, :order_id, :message_date, :message, :been_read)";
             $stmt = $this->pdo->prepare($insert_new_message);
             $stmt->execute(array(':user_id'=>$this->user_id,
                                  ':order_id'=>$this->order_id,
                                  ':message_date'=>$this->message_date,
-                                 ':message'=>$this->message
+                                 ':message'=>$this->message,
+                                 ':been_read'=>$been_read
                                 ));
         }
     }
