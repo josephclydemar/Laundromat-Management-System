@@ -80,7 +80,7 @@
         public function getMyOrders($order_status)
         {
             // get all user orders
-            $sql_select = "SELECT * FROM orders WHERE user_id=:user_id AND NOT order_status=:order_status";
+            $sql_select = "SELECT * FROM orders WHERE user_id=:user_id AND order_status=:order_status";
 	        $stmt = $this->pdo->prepare($sql_select);
             $stmt->execute(array(
                                  ':user_id'=>$this->user_id,
@@ -89,6 +89,7 @@
 	        $select_orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
             // var_dump($select_query_result_orders);
             // echo $select_query_result_orders;
+            
             return $select_orders;
         }
 

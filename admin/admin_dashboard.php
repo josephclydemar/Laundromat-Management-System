@@ -44,6 +44,7 @@
         {
             $_SESSION['order_id'] = $_POST['order_id'];
             $_SESSION['customer_id'] = $_POST['customer_id'];
+            $_SESSION['admin_id'] = $my_info['user_id'];
             header("Location: admin_feedback.php");
 	    	return;
         }

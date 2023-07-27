@@ -44,6 +44,10 @@
         $customer = new Customer($user_info['firstname'], $user_info['lastname'], $user_info['user_address'], $user_info['email'], $user_info['user_password']);
         // echo $_SESSION['user_id'];
         // echo 'TRRUUEUUEE';
+        $select_query_result_orders = $customer->getMyOrders(2);
+
+        $select_query_result_user = $customer->getMyInfo();
+
         if( isset($_POST['service_type']) && isset($_POST['weight']) && isset($_POST['order_price']) && isset($_POST['order_duration']) )
         {
             $time_today_SAYUP = date('d-m-Y H:i:s');
@@ -52,7 +56,11 @@
             $time_remaining = ((int)$_POST['order_duration']) * 60;
             // $time_remaining = ((int)$_POST['order_duration']);
 
-            $order_status = 2; // Set Order Status to In-progress
+            $order_status = 3; // Set Order Status to Pending
+            if(!$select_query_result_orders)
+            {
+                $order_status = 2;
+            }
             $time_offset = (int)$_POST['order_duration'];
 
             $date_and_time_split = explode(' ', $time_today_SAYUP);
@@ -67,16 +75,15 @@
             // $time_duration = ((int)$hour_minute_second_split[2]) + $time_offset;
    
             // $date_finish = $date_split_for_database_format[2].'-'.$date_split_for_database_format[1].'-'.($date_split_for_database_format[0]).' '.$time_duration.':'.$hour_minute_second_split[1].':'.$hour_minute_second_split[2];
-            $date_finish = $date_split_for_database_format[2].'-'.$date_split_for_database_format[1].'-'.($date_split_for_database_format[0]).' '.$hour_minute_second_split[0].':'.$time_duration.':'.$hour_minute_second_split[2];
-            // $date_finish = $date_split_for_database_format[2].'-'.$date_split_for_database_format[1].'-'.($date_split_for_database_format[0]).' '.$hour_minute_second_split[0].':'.$hour_minute_second_split[1].':'.$time_duration;
+            // $date_finish = $date_split_for_database_format[2].'-'.$date_split_for_database_format[1].'-'.($date_split_for_database_format[0]).' '.$hour_minute_second_split[0].':'.$time_duration.':'.$hour_minute_second_split[2];
+            $date_finish = $date_split_for_database_format[2].'-'.$date_split_for_database_format[1].'-'.($date_split_for_database_format[0]).' '.$hour_minute_second_split[0].':'.$hour_minute_second_split[1].':'.$time_duration;
             
             $customer->createOrder($_POST['service_type'], $time_today, $date_finish, $time_remaining, $order_status, $_POST['weight'], 'Hoy HEHE', $_POST['order_price']);
             header('Location: customer_dashboard.php');
             return;
         }
 
-        $select_query_result_orders = $customer->getMyOrders(1);
-        $select_query_result_user = $customer->getMyInfo();
+        
 
         // getting all complete orders
         $sql_select_complete_orders = "SELECT order_id, order_status FROM orders WHERE user_id=:user_id AND order_status=:order_status";
@@ -264,11 +271,11 @@
                                     echo '<tr>';
                                     echo '<td>'.$record['order_id'].'</td>';
                                     echo '<td>'.$record['date_ordered'].'</td>';
-                                    echo '<td class="remaining_time_class" id="_'.$record['order_id'].'">'.$record['remaining_time'].'</td>';
+                                    echo '<td class="remaining_time_class" id="_'.$record['order_id'].'_'.$record['user_id'].'">'.$record['remaining_time'].'</td>';
                                     // echo '<td>'.($time_to_finish-$time_now).'</td>';
                                     echo '<td>'.$all_services_info[$record['service_id']-1]['service_name'].'</td>';
                                     echo '<td>'.$payment_info['payment_amount'].'</td>';
-                                    echo '<td>'.$order_status_words[$record['order_status']].'</td>';
+                                    echo '<td style="background-color: #43A6ED;">'.$order_status_words[$record['order_status']].'</td>';
                                     echo '<td><form method="POST"><input type="hidden" name="order_id" value="'.$record['order_id'].'"><input type="hidden" name="user_id" value="'.$record['user_id'].'"><input class="feedback_button" id="notification_'.$record['order_id'].'_'.$admin_info['user_id'].'" type="submit" name="feedback" value="Comment"></form></td>';
                                     echo '</tr>';
                                     
@@ -326,7 +333,10 @@
               line-height: 1.15385;
               margin: 0;
               outline: none;
-              padding: 8px;
+              padding-top: 4px;
+              padding-bottom: 4px;
+              padding-left: 4px;
+              padding-right: 4px;
               position: relative;
               text-align: center;
               text-decoration: none;

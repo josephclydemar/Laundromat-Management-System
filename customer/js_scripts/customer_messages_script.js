@@ -41,6 +41,7 @@ feedback_xhr.onload = function()
         let new_message = document.createElement('div');
         new_message.classList.add('user_type_1');
         new_message.textContent = response_data;
+        new_message.style = 'font-size: 13px';
         // new_message.style = 'text-align: left;background-color: #F6F;color: #fff; padding: 2px;';
         messages_div.appendChild(new_message);
         previos_data = response_data;
