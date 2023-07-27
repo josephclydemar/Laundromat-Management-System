@@ -52,33 +52,34 @@
         {
             $time_today_SAYUP = date('d-m-Y H:i:s');
 
-            // $time_remaining = ((int)$_POST['order_duration']) * 3600;
-            $time_remaining = ((int)$_POST['order_duration']) * 60;
+            $time_remaining = ((int)$_POST['order_duration']) * 3600;
+            // $time_remaining = ((int)$_POST['order_duration']) * 60;
             // $time_remaining = ((int)$_POST['order_duration']);
 
-            $order_status = 3; // Set Order Status to Pending
-            if(!$select_query_result_orders)
-            {
-                $order_status = 2;
-            }
+            $order_status = 2; // Set Order Status to Pending
+
             $time_offset = (int)$_POST['order_duration'];
 
-            $date_and_time_split = explode(' ', $time_today_SAYUP);
-            $hour_minute_second_split = explode(':', $date_and_time_split[1]);
+            // $date_and_time_split = explode(' ', $time_today_SAYUP);
+            // $hour_minute_second_split = explode(':', $date_and_time_split[1]);
 
-            $date_split_for_database_format = explode('-', $date_and_time_split[0]);
-            $time_today = $date_split_for_database_format[2].'-'.$date_split_for_database_format[1].'-'.$date_split_for_database_format[0].' '.$date_and_time_split[1];
+            // $date_split_for_database_format = explode('-', $date_and_time_split[0]);
+            // $time_today = $date_split_for_database_format[2].'-'.$date_split_for_database_format[1].'-'.$date_split_for_database_format[0].' '.$date_and_time_split[1];
 
-            // $date_day_split_for_database_format = (int)$date_split_for_database_format[0];
-            // $time_duration = ((int)$hour_minute_second_split[0]) + $time_offset;
-            $time_duration = ((int)$hour_minute_second_split[1]) + $time_offset;
-            // $time_duration = ((int)$hour_minute_second_split[2]) + $time_offset;
+            // // $date_day_split_for_database_format = (int)$date_split_for_database_format[0];
+            // // $time_duration = ((int)$hour_minute_second_split[0]) + $time_offset;
+            // $time_duration = ((int)$hour_minute_second_split[1]) + $time_offset;
+            // // $time_duration = ((int)$hour_minute_second_split[2]) + $time_offset;
    
-            // $date_finish = $date_split_for_database_format[2].'-'.$date_split_for_database_format[1].'-'.($date_split_for_database_format[0]).' '.$time_duration.':'.$hour_minute_second_split[1].':'.$hour_minute_second_split[2];
-            // $date_finish = $date_split_for_database_format[2].'-'.$date_split_for_database_format[1].'-'.($date_split_for_database_format[0]).' '.$hour_minute_second_split[0].':'.$time_duration.':'.$hour_minute_second_split[2];
-            $date_finish = $date_split_for_database_format[2].'-'.$date_split_for_database_format[1].'-'.($date_split_for_database_format[0]).' '.$hour_minute_second_split[0].':'.$hour_minute_second_split[1].':'.$time_duration;
+            // // $date_finish = $date_split_for_database_format[2].'-'.$date_split_for_database_format[1].'-'.($date_split_for_database_format[0]).' '.$time_duration.':'.$hour_minute_second_split[1].':'.$hour_minute_second_split[2];
+            // // $date_finish = $date_split_for_database_format[2].'-'.$date_split_for_database_format[1].'-'.($date_split_for_database_format[0]).' '.$hour_minute_second_split[0].':'.$time_duration.':'.$hour_minute_second_split[2];
+            // $date_finish = $date_split_for_database_format[2].'-'.$date_split_for_database_format[1].'-'.($date_split_for_database_format[0]).' '.$hour_minute_second_split[0].':'.$hour_minute_second_split[1].':'.$time_duration;
             
-            $customer->createOrder($_POST['service_type'], $time_today, $date_finish, $time_remaining, $order_status, $_POST['weight'], 'Hoy HEHE', $_POST['order_price']);
+
+
+            $time_today = new DateTime();
+            $date_finish = (clone $time_today)->add(new DateInterval("PT{$time_offset}H"));
+            $customer->createOrder($_POST['service_type'], $time_today->format('Y-m-d H:i:s'), $date_finish->format('Y-m-d H:i:s'), $time_remaining, $order_status, $_POST['weight'], 'Hoy HEHE', $_POST['order_price']);
             header('Location: customer_dashboard.php');
             return;
         }
@@ -142,7 +143,7 @@
             <?php
             echo '<span style="font-weight: bold;">'.$select_query_result_user['firstname'].' '.$select_query_result_user['lastname'].'</span>';
             echo '<br>';
-            echo '<span style="font-weight: bold;">'.$select_query_result_user['user_id'].'</span>';
+            echo '<span style="font-weight:bold;font-size:13px;">USER ID: '.$select_query_result_user['user_id'].'</span>';
             ?>
         </div>
     </header>
@@ -211,26 +212,6 @@
                             <?php
                                 if($select_query_result_all_inprogress_orders) {
                                     foreach($select_query_result_all_inprogress_orders as $record) {
-                                        echo '<tr>';
-                                        echo '<td>'.$record['order_id'].'</td>';
-                                        echo '<td>'.$record['order_status'].'</td>';
-                                        echo '</tr>';
-                                    }
-                                }
-                            ?>
-                        </table>
-                        </div>
-                      </div>
-                      <div class="card3">
-                        <div class="card3-body">
-                        <table>
-                            <tr>
-                                <th>Order Number</th>
-                                <th style="background: rgb(255,37,0);">Pending</th>
-                            </tr>
-                            <?php
-                                if($select_query_result_all_pending_orders) {
-                                    foreach($select_query_result_all_pending_orders as $record) {
                                         echo '<tr>';
                                         echo '<td>'.$record['order_id'].'</td>';
                                         echo '<td>'.$record['order_status'].'</td>';
@@ -373,9 +354,9 @@
                 height: 60px;
                 background-color: #43A6ED;
                 padding-left: 30px;
-                padding-top: 15px;
-                font-size: 17px;
-                text-align: center;
+                padding-top: 5px;
+                font-size: 15px;
+                text-align: left;
         }
     
         .dashboard{

@@ -3,6 +3,7 @@
     include_once "../classes/database_connection.php";
     include_once "customer.php";
     // include_once "message.php";
+    date_default_timezone_set('Asia/Singapore');
 
     $db_conn = new DatabaseConnection();
     $pdo = $db_conn->getPDO();
@@ -97,7 +98,7 @@
         <div class="user">
             <?php
             echo '<span style="font-weight: 900;">'.$user_info['firstname'].' '.$user_info['lastname'].'</span><br>';
-            echo '<span style="font-weight: 900;">'.$user_info['user_id'].'</span>';
+            echo '<span style="font-weight: 900;"><span style="font-size:13px;">USER ID: '.$user_info['user_id'].'</span>';
             ?>
         </div>
     </header>
@@ -259,13 +260,14 @@
     }
     
     .user{
-            width: 15%;
-            height: 60px;
-            background-color: #43A6ED;
-            padding-left: 30px;
-            padding-top: 15px;
-            font-size: 17px;
-    }
+                width: 15%;
+                height: 60px;
+                background-color: #43A6ED;
+                padding-left: 30px;
+                padding-top: 5px;
+                font-size: 15px;
+                text-align: left;
+        }
 
     .dashboard{
         width: auto;

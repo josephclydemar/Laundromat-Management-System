@@ -81,9 +81,10 @@
         //     }
         // }
         if($last_user) {
-            echo 'gASGDSG';
-        }else {
             var_dump($last_user);
+        }else {
+            // var_dump($last_user);
+            echo 'gASGDSG';
         }
         
     ?>

@@ -5,6 +5,11 @@
 
     $db_conn = new DatabaseConnection();
     $pdo = $db_conn->getPDO();
+    if(isset($_POST['back']))
+    {
+        header('Location: admin_dashboard.php');
+        return;
+    }
 
     if(isset($_SESSION['user_id']))
     {
@@ -18,12 +23,7 @@
             header('Location: customer_dashboard.php');
             return;
         }
-
-        if(isset($_POST['back']))
-        {
-            header('Location: admin_dashboard.php');
-            return;
-        }
+        
 
         $admin = new Admin($user_info['firstname'], $user_info['lastname'], $user_info['user_address'], $user_info['email'], $user_info['user_password']);
         $my_info = $admin->getMyInfo();
@@ -77,7 +77,7 @@
         <?php
             echo '<span style="font-weight: bold;">'.$my_info['firstname'].' '.$my_info['lastname'].'</span>';
             echo '<br>';
-            echo '<span style="font-weight: bold;">'.$my_info['user_id'].'</span>';
+            echo '<span style="font-weight:bold;font-size:13px;">USER ID: '.$my_info['user_id'].'</span>';
             ?>
         </div>
     </header>
@@ -87,11 +87,6 @@
         <form method="POST">
             <input class="side_tabs" type="submit" name="back" value="Back to Dashboard">
         </form>
-            <div class="logout">
-            <form method="GET">
-                <input type="submit" name="logout" value="Log-out" class="logout">
-            </form>
-            </div>
         </div>
         <div class="main-container">
             <div class="second-container">
@@ -213,12 +208,13 @@
     }
     
     .user{
-            width: 15%;
-            height: 60px;
-            background-color: #43A6ED;
-            padding-left: 30px;
-            padding-top: 15px;
-            font-size: 17px;
+           width: 15%;
+           height: 60px;
+           background-color: #43A6ED;
+           padding-left: 30px;
+           padding-top: 5px;
+           font-size: 15px;
+           text-align: left;
     }
 
     .dashboard{

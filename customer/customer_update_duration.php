@@ -49,36 +49,36 @@
 
                 
                                 
-                $sql_select_pending_orders = "SELECT * FROM orders WHERE user_id=:user_id AND order_status=:order_status";
-                $stmt = $pdo->prepare($sql_select_pending_orders);
-                $stmt->execute(array(
-                                     ':user_id'=>$split_key[3],
-                                     ':order_status'=>3
-                                    ));
-                $pending_record = $stmt->fetch(PDO::FETCH_ASSOC);
-                // var_dump($pending_record);
+                // $sql_select_pending_orders = "SELECT * FROM orders WHERE user_id=:user_id AND order_status=:order_status";
+                // $stmt = $pdo->prepare($sql_select_pending_orders);
+                // $stmt->execute(array(
+                //                      ':user_id'=>$split_key[3],
+                //                      ':order_status'=>3
+                //                     ));
+                // $pending_record = $stmt->fetch(PDO::FETCH_ASSOC);
+                // // var_dump($pending_record);
 
-                if($pending_record)
-                {
-                    $date_set_to_inprogress = date('Y-m-d H:i:s');
-                    $splitted_date_set_to_inprogress_date_time = explode(' ', $date_set_to_inprogress);
-                    $splitted_date_set_to_inprogress_by_hour_minute_second = explode(':', $splitted_date_set_to_inprogress_date_time[1]);
-                    $calculated_minute = (((int)$splitted_date_set_to_inprogress_by_hour_minute_second[1]) + ((int)$pending_record['remaining_time']) / 60);
-                    $date_set_to_finish = $splitted_date_set_to_inprogress_date_time[0].' '.$splitted_date_set_to_inprogress_by_hour_minute_second[0].':'.$calculated_minute.':'.$splitted_date_set_to_inprogress_by_hour_minute_second[2];
+                // if($pending_record)
+                // {
+                //     $date_set_to_inprogress = date('Y-m-d H:i:s');
+                //     $splitted_date_set_to_inprogress_date_time = explode(' ', $date_set_to_inprogress);
+                //     $splitted_date_set_to_inprogress_by_hour_minute_second = explode(':', $splitted_date_set_to_inprogress_date_time[1]);
+                //     $calculated_minute = (((int)$splitted_date_set_to_inprogress_by_hour_minute_second[1]) + ((int)$pending_record['remaining_time']) / 60);
+                //     $date_set_to_finish = $splitted_date_set_to_inprogress_date_time[0].' '.$splitted_date_set_to_inprogress_by_hour_minute_second[0].':'.$calculated_minute.':'.$splitted_date_set_to_inprogress_by_hour_minute_second[2];
                     
-                    // echo $date_set_to_inprogress.' pppe '.$date_set_to_finish;
-                    // echo 'HAHA '.$splitted_date_set_to_inprogress_by_hour_minute_second[1];
-                    // echo 'HAHA '.$pending_record['remaining_time'];
+                //     // echo $date_set_to_inprogress.' pppe '.$date_set_to_finish;
+                //     // echo 'HAHA '.$splitted_date_set_to_inprogress_by_hour_minute_second[1];
+                //     // echo 'HAHA '.$pending_record['remaining_time'];
     
-                    $sql_update_order_status_to_inprogress = "UPDATE orders SET date_ordered=:date_ordered, date_finish=:date_finish, order_status=:order_status WHERE order_id=:order_id";
-                    $stmt = $pdo->prepare($sql_update_order_status_to_inprogress);
-                    $stmt->execute(array(
-                                         ':date_ordered'=>$date_set_to_inprogress,
-                                         ':date_finish'=>$date_set_to_finish,
-                                         ':order_status'=>2,
-                                         ':order_id'=>$pending_record['order_id']
-                                        ));
-                }
+                //     $sql_update_order_status_to_inprogress = "UPDATE orders SET date_ordered=:date_ordered, date_finish=:date_finish, order_status=:order_status WHERE order_id=:order_id";
+                //     $stmt = $pdo->prepare($sql_update_order_status_to_inprogress);
+                //     $stmt->execute(array(
+                //                          ':date_ordered'=>$date_set_to_inprogress,
+                //                          ':date_finish'=>$date_set_to_finish,
+                //                          ':order_status'=>2,
+                //                          ':order_id'=>$pending_record['order_id']
+                //                         ));
+                // }
                 
                 // header('Location: customer_dashboard.php');
                 // return;
